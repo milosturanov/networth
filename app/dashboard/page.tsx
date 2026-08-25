@@ -7,11 +7,7 @@ export default async function Dashboard() {
 
   const SessionToken = CookieStore.get("session_token")?.value;
 
-  if (!SessionToken) {
-    redirect("/login");
-  }
-
-  const userId = GetSession(SessionToken);
+  const userId = await GetSession(SessionToken!);
 
   if (!userId) {
     redirect("/login");
