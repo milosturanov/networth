@@ -1,17 +1,32 @@
-import { GetSession } from "@/lib/actions";
+"use server";
+
+import {
+  AccountBalanceRecalculate,
+  GetSession,
+  LoadAccounts,
+  LoadUser,
+} from "@/lib/actions";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import DashboardForm from "./dashboardForm";
 
 export default async function Dashboard() {
   const CookieStore = await cookies();
 
   const SessionToken = CookieStore.get("session_token")?.value;
 
-  const userId = await GetSession(SessionToken!);
+  if (!SessionToken) {
+    redirect("/login");
+  }
+
+  const userId = await GetSession(SessionToken);
 
   if (!userId) {
     redirect("/login");
   }
 
-  return <div>Dashboard</div>;
+  const userInfo = await LoadUser(userId);
+  const accountInfo = await LoadAccounts(userId);
+
+  return <DashboardForm userInfo={userInfo} accountInfo={accountInfo} />;
 }

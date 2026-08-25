@@ -47,13 +47,12 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --accent1: #134074;
-    --accent2: #13315c;
-    --accent3: #0b2545;
-    --secondary: #8da9c4;
-  }
+@theme {
+  --color-accent1: #134074;
+  --color-accent2: #13315c;
+  --color-accent3: #0b2545;
+  --color-secondary: #8da9c4;
+  --color-primary: #eef4ed;
 }
 
 :root {
