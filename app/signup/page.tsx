@@ -1,8 +1,9 @@
 "use client";
 
 import { Button, Input } from "@base-ui/react";
-import { LoginUser } from "@/lib/actions";
+import { RegisterUser } from "@/lib/actions";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function SignUp() {
   const [Username, setUsername] = useState("");
@@ -15,7 +16,7 @@ export default function SignUp() {
         className="flex flex-col items-center gap-2"
         onSubmit={async (e) => {
           e.preventDefault();
-          await LoginUser(Username, Password);
+          await RegisterUser(Username, Password);
         }}
       >
         <Input
@@ -35,6 +36,12 @@ export default function SignUp() {
           type="password"
           className="border rounded-sm pl-4"
         ></Input>
+        <Link
+          href="/login"
+          className="w-full text-left underline text-accent1 text-xs"
+        >
+          Already have account? Sign in
+        </Link>
         <Button
           className="bg-accent1 text-secondary w-min text-nowrap px-5 py-2 rounded-sm"
           type="submit"

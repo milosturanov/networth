@@ -4,17 +4,19 @@ import crypto from "crypto";
 import { pool } from "./db";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { accessSync } from "fs";
 
 export async function RegisterUser(username: string, password: string) {
   const result = await pool.query(
-    "INSERT INTO Users(name,password_hash) VALUES($1, $2)",
+    "INSERT INTO Users(name,password_hash) VALUES($1, $2) RETURNING id",
     [username, password],
   );
 
   const userId = result.rows[0].id;
 
   await CreateAccount(userId);
+  await CreateSession(userId);
+
+  redirect("/dashboard");
 }
 
 export async function LoginUser(username: string, password: string) {
@@ -64,8 +66,8 @@ async function CreateSession(id: number) {
 }
 
 async function CreateAccount(id: number) {
-  pool.query("INSERT INTO Account VALUES($1,'Cash')", [id]);
-  pool.query("INSERT INTO Account VALUES($1,'Bank')", [id]);
+  pool.query("INSERT INTO Account(userId, name) VALUES($1,'Cash')", [id]);
+  pool.query("INSERT INTO Account(userId, name) VALUES($1,'Card')", [id]);
 }
 
 export async function GetSession(sessionToken: string) {
@@ -89,7 +91,11 @@ export async function CheckSession() {
     [sessionToken, now],
   );
 
-  return rows[0].userId;
+  if (!rows[0]) {
+    return;
+  } else {
+    return rows[0];
+  }
 }
 
 export async function LoadUser(userId: number) {
@@ -101,9 +107,10 @@ export async function LoadUser(userId: number) {
 }
 
 export async function LoadAccounts(userId: number) {
-  const results = await pool.query("SELECT * FROM Account WHERE userId = $1", [
-    userId,
-  ]);
+  const results = await pool.query(
+    "SELECT * FROM Account WHERE userId = $1 ORDER BY id asc",
+    [userId],
+  );
 
   return results.rows;
 }
@@ -127,14 +134,51 @@ export async function AccountBalanceRecalculate(
   userId: number,
   accountId: number,
 ) {
+  console.log(userId, accountId);
   await pool.query(
     `
     UPDATE ACCOUNT
-    SET balance = ((SELECT sum(amount) FROM Transaction WHERE userId = $1 AND transactionTypeId = 'INC') - (SELECT COALESCE(sum(amount), 0) FROM Transaction WHERE userId = $2 AND transactionTypeId = 'EXP'))
-    WHERE userId = $3 AND id = $4
+    SET balance = ((SELECT sum(amount) FROM Transaction WHERE userId = $1 AND transactionTypeId = 'INC' AND accountId = $2) - (SELECT COALESCE(sum(amount), 0) FROM Transaction WHERE userId = $3 AND transactionTypeId = 'EXP' AND accountId = $4))
+    WHERE id = $5
     `,
-    [userId, userId, userId, accountId],
+    [userId, accountId, userId, accountId, accountId],
   );
 
   redirect("/dashboard");
+}
+
+export async function SignOut() {
+  const CookieStore = await cookies();
+
+  const sessionToken = CookieStore.get("session_token")?.value;
+
+  await pool.query(
+    `
+    DELETE FROM Session
+    WHERE sessionToken = $1
+    `,
+    [sessionToken],
+  );
+
+  CookieStore.delete("session_token");
+
+  redirect("/login");
+}
+
+export async function GetTransaction(userId: number) {
+  const result = await pool.query(
+    `
+    SELECT 
+    T.Name as TransactionName,
+    T.CreatedAt as CreatedAt,
+    A.Name as AccountName,
+    T.Amount as Amount
+    FROM Transaction T JOIN
+    Account A ON T.accountId = A.id
+    WHERE T.userId = $1
+    ORDER BY CreatedAt desc`,
+    [userId],
+  );
+
+  return result.rows;
 }

@@ -21,7 +21,12 @@ import {
   SelectLabel,
   SelectItem,
 } from "@/components/ui/select";
-import { SubmitTransaction } from "@/lib/actions";
+import { SignOut, SubmitTransaction } from "@/lib/actions";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+} from "@/components/ui/dropdown-menu";
 
 const TransactionType = [
   { label: "Select Transaction Type", value: null },
@@ -55,12 +60,21 @@ type Account = {
   createdAt: Date;
 };
 
+type Transaction = {
+  transactionname: string;
+  createdat: Date;
+  accountname: string;
+  amount: number;
+};
+
 export default function DashboardForm({
   userInfo,
   accountInfo,
+  transactionInfo,
 }: {
   userInfo: User;
-  accountInfo: Account;
+  accountInfo: Account[];
+  transactionInfo: Transaction[];
 }) {
   const [Open, setOpen] = useState(false);
   const [transactionCategory, setTransactionCategory] = useState(null);
@@ -73,12 +87,24 @@ export default function DashboardForm({
     <>
       <div className="flex flex-col w-full mx-auto px-5">
         <div className="flex justify-end py-5">
-          <Image src="/ova 1.png" alt="" width={43} height={43}></Image>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Image src="/ova 1.png" alt="" width={43} height={43}></Image>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <Button
+                className="bg-accent1"
+                onClick={async () => await SignOut()}
+              >
+                Log Out
+              </Button>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <div className="flex flex-col max-w-62.5 gap-2 mb-6">
           <h1 className="text-3xl font-medium">
-            Welcome back, <span className="capitalize">{userInfo.name}</span> !
+            Welcome back, <span className="capitalize">{userInfo.name}</span>!
           </h1>
           <p className="text-xs font-bold ">
             Your today’s networth is{" "}
@@ -90,7 +116,8 @@ export default function DashboardForm({
           <h1 className="font-semibold text-3xl bg-accent2 text-primary text-center py-7 rounded-2xl italic flex-4">
             {(
               Number(accountInfo[0].balance) + Number(accountInfo[1].balance)
-            ).toFixed(2)}
+            ).toFixed(2)}{" "}
+            din.
           </h1>
           <div className="flex gap-2">
             <h1 className="font-semibold text-2xl bg-accent1 text-primary text-center py-5 rounded-2xl italic flex-2">
@@ -100,6 +127,33 @@ export default function DashboardForm({
               {accountInfo[1].balance}
             </h1>
           </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col px-5 mx-auto">
+        <h1 className="font-medium text-xl mb-2 mt-4">Last Transactions</h1>
+        <div className="grid grid-cols-4 text-nowrap text-center text-primary bg-accent1 gap-2 py-2.5 rounded-t-lg text-sm">
+          <h2>Name</h2>
+          <h2>Date</h2>
+          <h2 className="truncate">Billed Account</h2>
+          <h2>Amount</h2>
+        </div>
+        <div className="flex flex-col">
+          {transactionInfo.map((transaction, index) => {
+            return (
+              <div
+                className="grid grid-cols-4 gap-2 text-sm text-center p-2 border-b"
+                key={index}
+              >
+                <h2 className="truncate">{transaction.transactionname}</h2>
+                <h2 className="truncate">
+                  {transaction.createdat.toLocaleDateString("en-GB")}
+                </h2>
+                <h2 className="truncate">{transaction.accountname}</h2>
+                <h2 className="truncate">{transaction.amount}</h2>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -172,16 +226,22 @@ export default function DashboardForm({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-                <Select items={BilledAccount} onValueChange={setBilledAccount}>
+                <Select
+                  items={accountInfo.map((account) => ({
+                    label: account.name,
+                    value: account.id,
+                  }))}
+                  onValueChange={setBilledAccount}
+                >
                   <SelectTrigger className="w-full">
-                    <SelectValue />
+                    <SelectValue placeholder="Select Billed Account" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Category</SelectLabel>
-                      {BilledAccount.map((item) => (
-                        <SelectItem key={item.value} value={item.value}>
-                          {item.label}
+                      {accountInfo.map((item) => (
+                        <SelectItem key={item.id} value={item.id}>
+                          {item.name}
                         </SelectItem>
                       ))}
                     </SelectGroup>

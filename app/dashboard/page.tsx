@@ -3,6 +3,7 @@
 import {
   AccountBalanceRecalculate,
   GetSession,
+  GetTransaction,
   LoadAccounts,
   LoadUser,
 } from "@/lib/actions";
@@ -27,6 +28,13 @@ export default async function Dashboard() {
 
   const userInfo = await LoadUser(userId);
   const accountInfo = await LoadAccounts(userId);
+  const TransactionInfo = await GetTransaction(userId);
 
-  return <DashboardForm userInfo={userInfo} accountInfo={accountInfo} />;
+  return (
+    <DashboardForm
+      userInfo={userInfo}
+      accountInfo={accountInfo}
+      transactionInfo={TransactionInfo}
+    />
+  );
 }

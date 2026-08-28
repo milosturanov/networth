@@ -3,6 +3,7 @@
 import { Button, Input } from "@base-ui/react";
 import { LoginUser } from "@/lib/actions";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function LoginForm() {
   const [Username, setUsername] = useState("");
@@ -35,6 +36,12 @@ export default function LoginForm() {
           type="password"
           className="border rounded-sm pl-4"
         ></Input>
+        <Link
+          href="/signup"
+          className="w-full text-left underline text-accent1 text-xs"
+        >
+          No account? Sign Up
+        </Link>
         <Button
           className="bg-accent1 text-secondary w-min text-nowrap px-5 py-2 rounded-sm"
           type="submit"

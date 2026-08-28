@@ -6,8 +6,6 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 export default async function Login() {
-  const userId = await CheckSession();
-
   const CookieStored = await cookies();
 
   const sessionToken = CookieStored.get("session_token")?.value;
@@ -17,6 +15,7 @@ export default async function Login() {
     redirect("/dashboard");
   }
 
+  const userId = await CheckSession();
   if (!userId) {
   } else {
     redirect("/dashboard");
