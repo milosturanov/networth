@@ -2,6 +2,7 @@
 
 import {
   AccountBalanceRecalculate,
+  getCategory,
   GetSession,
   GetTransaction,
   LoadAccounts,
@@ -29,12 +30,14 @@ export default async function Dashboard() {
   const userInfo = await LoadUser(userId);
   const accountInfo = await LoadAccounts(userId);
   const TransactionInfo = await GetTransaction(userId);
+  const Category = await getCategory();
 
   return (
     <DashboardForm
       userInfo={userInfo}
       accountInfo={accountInfo}
       transactionInfo={TransactionInfo}
+      Category={Category}
     />
   );
 }

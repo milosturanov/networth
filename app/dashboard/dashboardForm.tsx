@@ -34,19 +34,6 @@ const TransactionType = [
   { label: "Income", value: "INC" },
 ];
 
-const Category = [
-  { label: "Select Category", value: null },
-  { label: "Groceries", value: "1" },
-  { label: "Paycheck", value: "2" },
-  { label: "Travel", value: "3" },
-];
-
-const BilledAccount = [
-  { label: "Select Billed Acccount", value: null },
-  { label: "Cash", value: 1 },
-  { label: "Card", value: 2 },
-];
-
 type User = {
   id: number;
   name: string;
@@ -67,14 +54,21 @@ type Transaction = {
   amount: number;
 };
 
+type Category = {
+  id: number;
+  name: string;
+};
+
 export default function DashboardForm({
   userInfo,
   accountInfo,
   transactionInfo,
+  Category,
 }: {
   userInfo: User;
   accountInfo: Account[];
   transactionInfo: Transaction[];
+  Category: Category[];
 }) {
   const [Open, setOpen] = useState(false);
   const [transactionCategory, setTransactionCategory] = useState(null);
@@ -158,7 +152,7 @@ export default function DashboardForm({
       </div>
 
       <Button
-        className="flex items-center justify-center text-[50px] font-light bg-secondary text-primary rounded-full w-[50px] h-[50px] absolute bottom-[20px] right-[20px]"
+        className="flex items-center fixed justify-center text-[50px] font-light bg-secondary text-primary rounded-full w-12.5 h-12.5 bottom-5 right-5 "
         onClick={() => {
           setOpen(true);
         }}
@@ -211,16 +205,22 @@ export default function DashboardForm({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
-                <Select items={Category} onValueChange={setTransactionCategory}>
+                <Select
+                  items={Category.map((item) => ({
+                    label: item.name,
+                    value: item.id,
+                  }))}
+                  onValueChange={setTransactionCategory}
+                >
                   <SelectTrigger className="w-full">
-                    <SelectValue />
+                    <SelectValue placeholder="Select Category" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Category</SelectLabel>
                       {Category.map((item) => (
-                        <SelectItem key={item.value} value={item.value}>
-                          {item.label}
+                        <SelectItem key={item.id} value={item.id}>
+                          {item.name}
                         </SelectItem>
                       ))}
                     </SelectGroup>

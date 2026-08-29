@@ -182,3 +182,11 @@ export async function GetTransaction(userId: number) {
 
   return result.rows;
 }
+
+export async function getCategory() {
+  const result = await pool.query(`
+    SELECT * FROM Category
+    `);
+
+  return result.rows;
+}
