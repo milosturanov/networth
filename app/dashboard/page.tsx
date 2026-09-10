@@ -9,19 +9,10 @@ import {
   LoadUser,
 } from "@/lib/actions";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
 import DashboardForm from "./dashboardForm";
 
 export default async function Dashboard() {
-  const CookieStore = await cookies();
-
-  const SessionToken = CookieStore.get("session_token")?.value;
-
-  if (!SessionToken) {
-    redirect("/login");
-  }
-
-  const userId = await GetSession(SessionToken);
+  const userId = await GetSession();
 
   if (!userId) {
     redirect("/login");

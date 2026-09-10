@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { MoveRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import {
@@ -121,6 +123,12 @@ export default function DashboardForm({
               {accountInfo[1].balance}
             </h1>
           </div>
+          <Link
+            href="/dashboard/category-overview"
+            className="text-base font-medium w-full py-2 border border-accent3 flex gap-2 justify-center rounded-xl"
+          >
+            View Category Details <MoveRight width={24} height={24} />
+          </Link>
         </div>
       </div>
 

@@ -70,31 +70,19 @@ async function CreateAccount(id: number) {
   pool.query("INSERT INTO Account(userId, name) VALUES($1,'Card')", [id]);
 }
 
-export async function GetSession(sessionToken: string) {
+export async function GetSession() {
   const now = new Date();
-  const { rows } = await pool.query(
-    "SELECT userId FROM Session WHERE sessionToken = $1 AND experiesAt > $2",
-    [sessionToken, now],
-  );
-
-  return rows[0].userid;
-}
-
-export async function CheckSession() {
   const CookieStore = await cookies();
-
   const sessionToken = CookieStore.get("session_token")?.value;
 
-  const now = new Date();
   const { rows } = await pool.query(
     "SELECT userId FROM Session WHERE sessionToken = $1 AND experiesAt > $2",
     [sessionToken, now],
   );
-
-  if (!rows[0]) {
-    return;
-  } else {
-    return rows[0];
+  try {
+    return rows[0].userid;
+  } catch {
+    return false;
   }
 }
 
@@ -189,4 +177,25 @@ export async function getCategory() {
     `);
 
   return result.rows;
+}
+
+export async function getCategoryOverview(userId: number) {
+  const result = await pool.query(
+    `
+    SELECT
+      C.Name as "categoryName",
+      sum(T.amount) as "transactionAmount"
+      FROM Transaction T
+      JOIN Category C ON T.categoryId = C.id
+      WHERE T.userId = $1
+      GROUP BY C.id, C.Name
+    `,
+    [userId],
+  );
+
+  try {
+    return result.rows;
+  } catch {
+    return false;
+  }
 }
