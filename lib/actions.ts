@@ -95,12 +95,16 @@ export async function LoadUser(userId: number) {
 }
 
 export async function LoadAccounts(userId: number) {
-  const results = await pool.query(
+  const result = await pool.query(
     "SELECT * FROM Account WHERE userId = $1 ORDER BY id asc",
     [userId],
   );
 
-  return results.rows;
+  try {
+    return result.rows;
+  } catch {
+    return [];
+  }
 }
 
 export async function SubmitTransaction(

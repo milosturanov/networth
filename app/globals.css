@@ -101,3 +101,18 @@
     @apply font-sans;
   }
 }
+
+html,
+body {
+  /* Firefox */
+  scrollbar-width: none;
+
+  /* IE and Legacy Edge */
+  -ms-overflow-style: none;
+}
+
+/* Chrome, Safari, Opera, and Modern Edge */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}

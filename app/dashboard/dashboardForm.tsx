@@ -124,10 +124,16 @@ export default function DashboardForm({
             </h1>
           </div>
           <Link
-            href="/dashboard/category-overview"
-            className="text-base font-medium w-full py-2 border border-accent3 flex gap-2 justify-center rounded-xl"
+            href="/dashboard/accounts"
+            className="text-xs font-regular w-full py-2 border border-accent3 flex justify-center rounded-xl"
           >
-            View Category Details <MoveRight width={24} height={24} />
+            VIEW ALL ACCOUNTS
+          </Link>
+          <Link
+            href="/dashboard/category-overview"
+            className="text-xs font-bold w-full py-2 border border-accent3 flex justify-center rounded-xl bg-accent1 text-primary"
+          >
+            VIEW CATEGORY DETAILS
           </Link>
         </div>
       </div>
