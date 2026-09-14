@@ -275,6 +275,14 @@ export default function DashboardForm({
           </DialogHeader>
         </DialogContent>
       </Dialog>
+
+      <Image
+        src="/dashboardCircles.svg"
+        width={225}
+        height={225}
+        alt="dashboardCircles"
+        className="absolute top-0 right-0"
+      />
     </>
   );
 }
