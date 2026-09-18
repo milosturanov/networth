@@ -1,7 +1,17 @@
 "use client";
 import Link from "next/link";
 import { ChevronLeft, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { useState } from "react";
+import { CreateNewAccount } from "@/lib/actions";
 
 type AccountInfo = {
   id: number;
@@ -13,9 +23,13 @@ type AccountInfo = {
 
 export default function AccountsClient({
   accounts,
+  userId,
 }: {
   accounts: AccountInfo[];
+  userId: number;
 }) {
+  const [Open, SetOpen] = useState(false);
+  const [AccountName, setAccountName] = useState("");
   return (
     <div className="flex flex-col px-5 pt-5 gap-5">
       <Link href="/dashboard">
@@ -52,9 +66,37 @@ export default function AccountsClient({
         </div>
       ))}
 
-      <h2 className="bg-accent1 font-bold text-xs text-primary py-2 rounded-3xl flex justify-center">
+      <Button
+        className="bg-accent1 font-bold text-xs text-primary py-2 rounded-3xl flex justify-center"
+        onClick={() => {
+          SetOpen(!Open);
+        }}
+      >
         CREATE NEW ACCOUNT
-      </h2>
+      </Button>
+
+      <Dialog open={Open} onOpenChange={() => SetOpen(!Open)}>
+        <DialogContent>
+          <DialogHeader>Add New Account</DialogHeader>
+          <form
+            onSubmit={async () => {
+              await CreateNewAccount(userId, AccountName);
+            }}
+          >
+            <DialogDescription className="flex flex-col gap-2">
+              <Input
+                placeholder="Enter Account Name"
+                onChange={(e) => {
+                  setAccountName(e.target.value);
+                }}
+              />
+              <Button type="submit" className="bg-accent1 font-medium text-sm">
+                Finish
+              </Button>
+            </DialogDescription>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

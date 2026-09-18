@@ -13,5 +13,5 @@ export default async function Accounts() {
 
   const Accounts = await LoadAccounts(userId);
 
-  return <AccountsClient accounts={Accounts} />;
+  return <AccountsClient accounts={Accounts} userId={userId} />;
 }

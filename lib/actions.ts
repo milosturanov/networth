@@ -203,3 +203,12 @@ export async function getCategoryOverview(userId: number) {
     return false;
   }
 }
+
+export async function CreateNewAccount(userId: number, accountName: string) {
+  await pool.query("INSERT INTO Account(userId, name) values($1,$2)", [
+    userId,
+    accountName,
+  ]);
+
+  redirect("/dashboard/accounts");
+}
