@@ -146,7 +146,7 @@ export default function DashboardForm({
           <h2>Amount</h2>
         </div>
         <div className="flex flex-col">
-          {transactionInfo.map((transaction, index) => {
+          {transactionInfo.slice(0, 5).map((transaction, index) => {
             return (
               <div
                 className="grid grid-cols-4 gap-2 text-sm text-center p-2 border-b"
@@ -162,6 +162,12 @@ export default function DashboardForm({
             );
           })}
         </div>
+        <Link
+          href="/dashboard/transactions"
+          className="text-xs font-bold w-full py-2 border border-accent3 flex justify-center rounded-xl bg-accent1 text-primary"
+        >
+          VIEW ALL TRANSACTIONS
+        </Link>
       </div>
 
       <Button
