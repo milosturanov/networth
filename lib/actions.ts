@@ -212,3 +212,24 @@ export async function CreateNewAccount(userId: number, accountName: string) {
 
   redirect("/dashboard/accounts");
 }
+
+export async function GetTransactionDetails(transactionId: number) {
+  const result = await pool.query(
+    `
+    SELECT 
+      T.id as TransactionId,
+      T.Name as TransactionName,
+      T.CreatedAt as CreatedAt,
+      A.Name as AccountName,
+	    C.Name as CategoryName,
+      T.Amount as Amount
+    FROM Transaction T JOIN
+    Account A ON T.accountId = A.id 
+	  JOIN Category C ON T.CategoryId = C.id
+    WHERE T.id = $1
+  `,
+    [transactionId],
+  );
+
+  return result.rows[0];
+}

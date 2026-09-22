@@ -4,6 +4,7 @@ import { ChevronLeft, CircleChevronRight } from "lucide-react";
 import Link from "next/link";
 
 type Transaction = {
+  transactionid: number;
   transactionname: string;
   accountname: string;
   amount: number;
@@ -40,11 +41,13 @@ export default function TransactionsClient({
             </h1>
             <h1 className="truncate">{transaction.accountname}</h1>
             <h1 className="truncate">${transaction.amount}</h1>
-            <CircleChevronRight
-              width={16}
-              height={16}
-              className="ml-auto mr-auto"
-            />
+            <Link href={`/dashboard/transactions/${transaction.transactionid}`}>
+              <CircleChevronRight
+                width={16}
+                height={16}
+                className="ml-auto mr-auto"
+              />
+            </Link>
           </div>
         );
       })}

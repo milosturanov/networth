@@ -116,3 +116,15 @@ html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none;
 }
+
+.transactionDetailsLabel {
+  font-size: 14px;
+  font-weight: medium;
+  color: #00000060;
+  margin-bottom: -4px;
+}
+.transactionDetailsValue {
+  font-size: 18px;
+  font-weight: medium;
+  color: #000000;
+}
