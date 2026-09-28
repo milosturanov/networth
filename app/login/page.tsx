@@ -1,6 +1,6 @@
 "use server";
 
-import { GetSession } from "@/lib/actions";
+import { GetSession } from "@/lib/auth/session";
 import LoginForm from "./LoginForm";
 import { redirect } from "next/navigation";
 

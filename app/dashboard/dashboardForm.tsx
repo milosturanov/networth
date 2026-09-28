@@ -22,7 +22,10 @@ import {
   SelectLabel,
   SelectItem,
 } from "@/components/ui/select";
-import { SignOut, SubmitTransaction } from "@/lib/actions";
+
+import { SignOut } from "@/lib/auth/auth";
+import { SubmitTransaction } from "@/lib/app/transaction";
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,

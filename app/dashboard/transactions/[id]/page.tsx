@@ -1,6 +1,8 @@
 "use server";
 
-import { GetSession, GetTransactionDetails } from "@/lib/actions";
+import { GetSession } from "@/lib/auth/session";
+import { LoadTransactionDetails } from "@/lib/app/transaction";
+
 import { redirect } from "next/navigation";
 import TransactionDetailsClient from "./transactionDetailsClient";
 
@@ -18,7 +20,7 @@ export default async function TransactionDetails({
   const { id } = await params;
   const transactionId = Number(id);
 
-  const transactionDetails = await GetTransactionDetails(transactionId);
+  const transactionDetails = await LoadTransactionDetails(transactionId);
   return (
     <TransactionDetailsClient
       transactionDetails={transactionDetails}

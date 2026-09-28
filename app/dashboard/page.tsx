@@ -1,13 +1,11 @@
 "use server";
 
-import {
-  AccountBalanceRecalculate,
-  getCategory,
-  GetSession,
-  GetTransaction,
-  LoadAccounts,
-  LoadUser,
-} from "@/lib/actions";
+import { GetSession } from "@/lib/auth/session";
+import { LoadUser } from "@/lib/app/user";
+import { LoadAccounts } from "@/lib/app/account";
+import { LoadTransactions } from "@/lib/app/transaction";
+import { LoadCategories } from "@/lib/app/category";
+
 import { redirect } from "next/navigation";
 import DashboardForm from "./dashboardForm";
 
@@ -20,8 +18,8 @@ export default async function Dashboard() {
 
   const userInfo = await LoadUser(userId);
   const accountInfo = await LoadAccounts(userId);
-  const TransactionInfo = await GetTransaction(userId);
-  const Category = await getCategory();
+  const TransactionInfo = await LoadTransactions(userId);
+  const Category = await LoadCategories();
 
   return (
     <DashboardForm

@@ -1,7 +1,10 @@
 "use server";
 
 import CategoryOverviewClient from "./categoryOverviewClient";
-import { GetSession, getCategoryOverview } from "@/lib/actions";
+
+import { GetSession } from "@/lib/auth/session";
+import { LoadCategoryOverview } from "@/lib/app/category";
+
 import { redirect } from "next/navigation";
 
 export default async function CategoryOverview() {
@@ -11,7 +14,7 @@ export default async function CategoryOverview() {
     redirect("/login");
   }
 
-  const categoryDetails = await getCategoryOverview(userId);
+  const categoryDetails = await LoadCategoryOverview(userId);
 
   if (!categoryDetails) {
     return false;

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Input } from "@base-ui/react";
-import { RegisterUser } from "@/lib/actions";
+import { Register } from "@/lib/auth/auth";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -16,7 +16,7 @@ export default function SignUpForm() {
         className="flex flex-col items-center gap-2"
         onSubmit={async (e) => {
           e.preventDefault();
-          await RegisterUser(Username, Password);
+          await Register(Username, Password);
         }}
       >
         <Input

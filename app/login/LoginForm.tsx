@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Input } from "@base-ui/react";
-import { LoginUser } from "@/lib/actions";
+import { Login } from "@/lib/auth/auth";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -16,7 +16,7 @@ export default function LoginForm() {
         className="flex flex-col items-center gap-2"
         onSubmit={async (e) => {
           e.preventDefault();
-          await LoginUser(Username, Password);
+          await Login(Username, Password);
         }}
       >
         <Input

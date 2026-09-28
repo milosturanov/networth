@@ -1,6 +1,7 @@
 "use server";
 
-import { GetSession, GetTransaction } from "@/lib/actions";
+import { GetSession } from "@/lib/auth/session";
+import { LoadTransactions } from "@/lib/app/transaction";
 import TransactionsClient from "./transactionsClient";
 import { redirect } from "next/navigation";
 
@@ -10,7 +11,7 @@ export default async function Transactions() {
     redirect("/login");
   }
 
-  const Transactions = await GetTransaction(userId);
+  const Transactions = await LoadTransactions(userId);
 
   return <TransactionsClient Transactions={Transactions} />;
 }

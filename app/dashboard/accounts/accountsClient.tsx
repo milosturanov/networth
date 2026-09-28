@@ -11,7 +11,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { CreateNewAccount } from "@/lib/actions";
+import { CreateNewAccount } from "@/lib/app/account";
 
 type AccountInfo = {
   id: number;

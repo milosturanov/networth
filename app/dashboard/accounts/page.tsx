@@ -1,7 +1,10 @@
 "use server";
 
 import AccountsClient from "./accountsClient";
-import { GetSession, LoadAccounts } from "@/lib/actions";
+
+import { GetSession } from "@/lib/auth/session";
+import { LoadAccounts } from "@/lib/app/account";
+
 import { redirect } from "next/navigation";
 
 export default async function Accounts() {

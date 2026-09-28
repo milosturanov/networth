@@ -2,6 +2,7 @@
 
 import { ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type TransactionDetails = {
   transactionid: number;
@@ -21,10 +22,13 @@ export default function TransactionDetailsClient({
   return (
     <div className="flex flex-col px-5 mx-auto pt-5 w-full gap-9">
       <div className="flex flex-col gap-9">
-        <div className="flex gap-4 items-center">
+        <Link
+          className="flex gap-4 items-center"
+          href="/dashboard/transactions"
+        >
           <ChevronLeft width={32} height={32} />
           <h1 className="text-2xl font-medium">Transaction</h1>
-        </div>
+        </Link>
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
