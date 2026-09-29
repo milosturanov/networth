@@ -2,6 +2,7 @@
 
 import { pool } from "../db";
 import { AccountRebalance } from "./account";
+import { redirect } from "next/navigation";
 
 export async function SubmitTransaction(
   name: string,
@@ -15,7 +16,9 @@ export async function SubmitTransaction(
     "INSERT INTO Transaction(name,userId,transactionTypeId,categoryId,accountId,amount) VALUES($1,$2,$3,$4,$5,$6)",
     [name, userId, transactionTypeId, categoryId, accountId, amount],
   );
-  await AccountRebalance(userId, accountId);
+  await AccountRebalance(accountId);
+
+  redirect("/dashboard");
 }
 
 export async function LoadTransactions(userId: number) {
@@ -44,6 +47,7 @@ export async function LoadTransactionDetails(transactionId: number) {
       T.id as TransactionId,
       T.Name as TransactionName,
       T.CreatedAt as CreatedAt,
+      A.id as AccountId,
       A.Name as AccountName,
 	    C.Name as CategoryName,
       T.Amount as Amount
@@ -56,4 +60,21 @@ export async function LoadTransactionDetails(transactionId: number) {
   );
 
   return result.rows[0];
+}
+
+export async function DeleteTransaction(
+  transactionId: number,
+  accountId: number,
+) {
+  await pool.query(
+    `
+      DELETE FROM Transaction
+	    WHERE id = $1
+    `,
+    [transactionId],
+  );
+
+  await AccountRebalance(accountId);
+
+  redirect("/dashboard/transactions");
 }

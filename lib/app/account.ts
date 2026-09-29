@@ -32,16 +32,16 @@ export async function CreateNewAccount(userId: number, accountName: string) {
   redirect("/dashboard/accounts");
 }
 
-export async function AccountRebalance(userId: number, accountId: number) {
-  console.log(userId, accountId);
+export async function AccountRebalance(accountId: number) {
   await pool.query(
     `
-    UPDATE ACCOUNT
-    SET balance = ((SELECT sum(amount) FROM Transaction WHERE userId = $1 AND transactionTypeId = 'INC' AND accountId = $2) - (SELECT COALESCE(sum(amount), 0) FROM Transaction WHERE userId = $3 AND transactionTypeId = 'EXP' AND accountId = $4))
-    WHERE id = $5
+    UPDATE Account
+      SET balance = (
+	      (SELECT COALESCE(SUM(amount),0) FROM Transaction WHERE accountId = $1 AND TransactionTypeId = 'INC')
+	      -
+	      (SELECT COALESCE(SUM(amount),0) FROM Transaction WHERE accountId = $1 AND TransactionTypeId = 'EXP'))
+	      WHERE id = $1
     `,
-    [userId, accountId, userId, accountId, accountId],
+    [accountId],
   );
-
-  redirect("/dashboard");
 }
