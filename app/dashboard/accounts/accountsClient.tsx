@@ -15,10 +15,10 @@ import { CreateNewAccount } from "@/lib/app/account";
 
 type AccountInfo = {
   id: number;
-  userId: number;
   name: string;
   balance: number;
-  createdAt: string;
+  code: string;
+  rate: number;
 };
 
 export default function AccountsClient({
@@ -30,6 +30,8 @@ export default function AccountsClient({
 }) {
   const [Open, SetOpen] = useState(false);
   const [AccountName, setAccountName] = useState("");
+  const [CurrencyId, setCurrencyId] = useState(0);
+
   return (
     <div className="flex flex-col px-5 pt-5 gap-5">
       <Link href="/dashboard">
@@ -56,7 +58,10 @@ export default function AccountsClient({
                 {account.name}
               </h2>
               <h1 className="text-3xl font-medium leading-none">
-                {account.balance}
+                {account.balance} {account.code}
+              </h1>
+              <h1 className="text-3xl font-medium leading-none">
+                {account.balance * account.rate}
               </h1>
             </div>
             <Link href="#" className="flex text-xs font-medium gap-1">
@@ -80,7 +85,7 @@ export default function AccountsClient({
           <DialogHeader>Add New Account</DialogHeader>
           <form
             onSubmit={async () => {
-              await CreateNewAccount(userId, AccountName);
+              await CreateNewAccount(userId, AccountName, CurrencyId);
             }}
           >
             <DialogDescription className="flex flex-col gap-2">
@@ -90,6 +95,13 @@ export default function AccountsClient({
                   setAccountName(e.target.value);
                 }}
               />
+              <Input
+                placeholder="Enter Currency Id"
+                onChange={(e) => {
+                  setCurrencyId(Number(e.target.value));
+                }}
+              />
+
               <Button type="submit" className="bg-accent1 font-medium text-sm">
                 Finish
               </Button>
