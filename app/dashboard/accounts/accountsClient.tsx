@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ChevronLeft, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, EllipsisVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
@@ -21,71 +21,85 @@ type AccountInfo = {
   rate: number;
 };
 
+type User = {
+  id: number;
+  name: string;
+  currencyCode: string;
+  currencyName: string;
+};
+
 export default function AccountsClient({
   accounts,
-  userId,
+  userInfo,
 }: {
   accounts: AccountInfo[];
-  userId: number;
+  userInfo: User;
 }) {
   const [Open, SetOpen] = useState(false);
   const [AccountName, setAccountName] = useState("");
   const [CurrencyId, setCurrencyId] = useState(0);
 
   return (
-    <div className="flex flex-col px-5 pt-5 gap-5">
+    <div className="flex flex-col px-5 pt-5 gap-8">
       <Link href="/dashboard">
         <div className="flex items-center gap-4">
           <ChevronLeft width={32} height={32} />
           <h1 className="text-2xl font-medium">Accounts Overview</h1>
         </div>
       </Link>
-      {accounts.map((account) => (
-        <div
-          className="flex gap-3 py-4 px-3 border rounded-2xl"
-          key={account.id}
-        >
-          <Image
-            src="/cashIcon.svg"
-            width={120}
-            height={91}
-            alt="cashIcon"
-            loading="eager"
-          />
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-3">
-              <h2 className="text-2xl font-medium leading-none">
-                {account.name}
-              </h2>
-              <h1 className="text-3xl font-medium leading-none">
-                {account.balance} {account.code}
-              </h1>
-              <h1 className="text-3xl font-medium leading-none">
-                {account.balance * account.rate}
-              </h1>
-            </div>
-            <Link href="#" className="flex text-xs font-medium gap-1">
-              VIEW LAST TRANSACTIONS <ArrowRight width={16} height={16} />
-            </Link>
-          </div>
-        </div>
-      ))}
+      <div className="flex flex-col gap-3">
+        {accounts.map((account) => (
+          <div
+            className="flex flex-col gap-3 p-3 cardGradient rounded-[10px] uppercase text-[#ffffff]"
+            key={account.id}
+          >
+            <h1 className="font-semibold text-2xl text-[#ffffff] flex items-center justify-between">
+              {account.name} <EllipsisVertical />
+            </h1>
+            <div className="flex justify-between items-center">
+              <div>
+                <Image
+                  src="/accountIcon.svg"
+                  width={120}
+                  height={120}
+                  alt="accountIcon"
+                />
+              </div>
+              <div className="flex flex-col gap-5">
+                <div className="flex flex-col">
+                  <h2 className="font-semibold text-sm text-[#EBEBEB]">
+                    {account.balance.toLocaleString("sr-RS")} {account.code}
+                  </h2>
+                  <h1 className="font-semibold text-2xl ">
+                    {(account.balance * account.rate).toLocaleString("de-DE")}{" "}
+                    {userInfo.currencyCode}
+                  </h1>
+                </div>
 
-      <Button
-        className="bg-accent1 font-bold text-xs text-primary py-2 rounded-3xl flex justify-center"
-        onClick={() => {
-          SetOpen(!Open);
-        }}
-      >
-        CREATE NEW ACCOUNT
-      </Button>
+                <Link href="#" className="flex">
+                  LAST TRANSACTIONS <ChevronRight />
+                </Link>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <Button
+          className="bg-accent1 font-bold text-xs text-primary py-2 rounded-3xl flex justify-center"
+          onClick={() => {
+            SetOpen(!Open);
+          }}
+        >
+          CREATE NEW ACCOUNT
+        </Button>
+      </div>
 
       <Dialog open={Open} onOpenChange={() => SetOpen(!Open)}>
         <DialogContent>
           <DialogHeader>Add New Account</DialogHeader>
           <form
             onSubmit={async () => {
-              await CreateNewAccount(userId, AccountName, CurrencyId);
+              await CreateNewAccount(userInfo.id, AccountName, CurrencyId);
             }}
           >
             <DialogDescription className="flex flex-col gap-2">

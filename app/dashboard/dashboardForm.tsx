@@ -41,6 +41,8 @@ const TransactionType = [
 type User = {
   id: number;
   name: string;
+  currencyCode: string;
+  currencyName: string;
 };
 
 type Account = {
@@ -80,7 +82,7 @@ export default function DashboardForm({
   const [transactionName, setTransationName] = useState("");
   const [transactionAmount, setTransactionAmount] = useState(0);
   const [billedAccount, setBilledAccount] = useState(null);
-
+  console.log(userInfo);
   return (
     <>
       <div className="flex flex-col w-full mx-auto px-5">
@@ -115,7 +117,7 @@ export default function DashboardForm({
             {(
               Number(accountInfo[0].balance) + Number(accountInfo[1].balance)
             ).toFixed(2)}{" "}
-            din.
+            {userInfo.currencyCode}
           </h1>
           <div className="flex gap-2">
             <h1 className="font-semibold text-2xl bg-accent1 text-primary text-center py-5 rounded-2xl italic flex-2">

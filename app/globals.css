@@ -128,3 +128,12 @@ body::-webkit-scrollbar {
   font-weight: medium;
   color: #000000;
 }
+
+.cardGradient {
+  background: #0090c1;
+  background: linear-gradient(
+    243deg,
+    rgba(0, 144, 193, 1) 0%,
+    rgba(0, 68, 91, 1) 100%
+  );
+}
