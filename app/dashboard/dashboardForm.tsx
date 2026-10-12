@@ -69,12 +69,14 @@ export default function DashboardForm({
   userInfo,
   accountInfo,
   transactionInfo,
-  Category,
+  category,
+  networth,
 }: {
   userInfo: User;
   accountInfo: Account[];
   transactionInfo: Transaction[];
-  Category: Category[];
+  category: Category[];
+  networth: number;
 }) {
   const [Open, setOpen] = useState(false);
   const [transactionCategory, setTransactionCategory] = useState(null);
@@ -85,7 +87,7 @@ export default function DashboardForm({
   console.log(userInfo);
   return (
     <>
-      <div className="flex flex-col w-full mx-auto px-5">
+      <div className="flex flex-col w-full mx-auto px-5 z-10">
         <div className="flex justify-end py-5">
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -114,9 +116,10 @@ export default function DashboardForm({
 
         <div className="flex flex-col gap-2">
           <h1 className="font-semibold text-3xl bg-accent2 text-primary text-center py-7 rounded-2xl italic flex-4">
-            {(
-              Number(accountInfo[0].balance) + Number(accountInfo[1].balance)
-            ).toFixed(2)}{" "}
+            {Number(networth).toLocaleString("de-DE", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
             {userInfo.currencyCode}
           </h1>
           <div className="flex gap-2">
@@ -230,7 +233,7 @@ export default function DashboardForm({
                   </SelectContent>
                 </Select>
                 <Select
-                  items={Category.map((item) => ({
+                  items={category.map((item) => ({
                     label: item.name,
                     value: item.id,
                   }))}
@@ -242,7 +245,7 @@ export default function DashboardForm({
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Category</SelectLabel>
-                      {Category.map((item) => (
+                      {category.map((item) => (
                         <SelectItem key={item.id} value={item.id}>
                           {item.name}
                         </SelectItem>

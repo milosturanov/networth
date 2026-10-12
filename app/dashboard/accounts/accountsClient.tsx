@@ -60,8 +60,8 @@ export default function AccountsClient({
               <div>
                 <Image
                   src="/accountIcon.svg"
-                  width={120}
-                  height={120}
+                  width={110}
+                  height={110}
                   alt="accountIcon"
                 />
               </div>

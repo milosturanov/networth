@@ -5,8 +5,8 @@ import { redirect } from "next/navigation";
 
 export async function CreateAccount(id: number) {
   pool.query(
-    "INSERT INTO Account(userId, name) VALUES($1,'Cash'), VALUES($2,'Card')",
-    [id, id],
+    "INSERT INTO Account(userId, name) VALUES($1,'CASH ACCOUNT'), VALUES($1,'CARD ACCOUNT')",
+    [id],
   );
 }
 
@@ -56,4 +56,20 @@ export async function AccountRebalance(accountId: number) {
     `,
     [accountId],
   );
+}
+
+export async function CalculateNetworth(userId: number) {
+  // Sum of all accounts = networth ( balance * rate cuz different currencies )
+  const result = await pool.query(
+    `
+    SELECT
+	    sum(A.balance * ER.Rate)
+    FROM Account A JOIN
+    ExchangeRate ER ON A.currencyId = ER.firstCurrencyId 
+    WHERE A.userId = $1 AND ER.secondCurrencyId = ( SELECT primaryCurrency FROM Users WHERE id = $1)
+    `,
+    [userId],
+  );
+
+  return result.rows[0];
 }

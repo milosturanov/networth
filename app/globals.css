@@ -136,4 +136,5 @@ body::-webkit-scrollbar {
     rgba(0, 144, 193, 1) 0%,
     rgba(0, 68, 91, 1) 100%
   );
+  box-shadow: 3px 5px 10px 0px rgba(0, 0, 0, 0.25);
 }
