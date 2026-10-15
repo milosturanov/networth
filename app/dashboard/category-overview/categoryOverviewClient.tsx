@@ -2,7 +2,9 @@
 
 type categoryDetails = {
   categoryName: string;
-  transactionAmount: number;
+  categorySpentAmount: number;
+  userCurrencyId: string;
+  hexCode: string;
 };
 
 import { ChevronLeft } from "lucide-react";
@@ -26,11 +28,29 @@ export default function CategoryOverviewClient({
         {categoryDetails.map((element, index) => {
           return (
             <div
+              className={`flex pl-7 rounded-[10px] uppercase relative h-[150px] items-center`}
+              style={{ backgroundColor: element.hexCode }}
               key={index}
-              className="w-full flex flex-col border border-secondary gap-4 items-center text-2xl font-medium py-4 rounded-2xl "
             >
-              <h1>{element.categoryName}</h1>
-              <h1>{element.transactionAmount}</h1>
+              <div className="w-1 h-full bg-primary" />
+              <div className="w-full  text-primary  pt-5 pb-7  ">
+                <div className="flex flex-col items-center">
+                  <div className="flex flex-col gap-7">
+                    <h1 className="font-bold text-xl">
+                      {element.categoryName}
+                    </h1>
+                    <div className="flex flex-col gap-1 items-left w-max">
+                      <h1 className="font-bold text-3xl">
+                        {Number(element.categorySpentAmount).toLocaleString(
+                          "de-DE",
+                        )}{" "}
+                        {element.userCurrencyId}
+                      </h1>
+                      <h2 className="text-xs">1,4% MORE THAN LAST MONTH</h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           );
         })}

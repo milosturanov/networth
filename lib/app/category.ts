@@ -13,13 +13,16 @@ export async function LoadCategories() {
 export async function LoadCategoryOverview(userId: number) {
   const result = await pool.query(
     `
-    SELECT
-      C.Name as "categoryName",
-      sum(T.amount) as "transactionAmount"
-      FROM Transaction T
-      JOIN Category C ON T.categoryId = C.id
-      WHERE T.userId = $1
-      GROUP BY C.id, C.Name
+    SELECT 
+	    C.Name as "categoryName",
+	    sum(Round(T.amount * (SELECT Rate from ExchangeRate WHERE secondCurrencyId = (SELECT currencyId FROM Users WHERE id = $1) AND firstCurrencyId = A.currencyId),2)) as "categorySpentAmount",
+	    (SELECT CurrencyId FROM USERS WHERE id = $1) as "userCurrencyId",
+      C.hexCode as "hexCode"
+    FROM Transaction T
+    JOIN Account A ON T.accountId = A.id
+    JOIN Category C ON T.CategoryId = C.id
+    WHERE T.userid = $1
+    GROUP BY C.id
     `,
     [userId],
   );
