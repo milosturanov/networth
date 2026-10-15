@@ -5,9 +5,15 @@ import { Register } from "@/lib/auth/auth";
 import { useState } from "react";
 import Link from "next/link";
 
-export default function SignUpForm() {
+import CurrencyCombobox from "@/components/custom/currencyCombobox";
+import { Currency } from "@/lib/types";
+
+export default function SignUpForm({ currencies }: { currencies: Currency[] }) {
   const [Username, setUsername] = useState("");
   const [Password, setPassword] = useState("");
+  const [SelectedCurrencyId, setSelectedCurrencyId] = useState<string | null>(
+    "",
+  );
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
@@ -16,12 +22,13 @@ export default function SignUpForm() {
         className="flex flex-col items-center gap-2"
         onSubmit={async (e) => {
           e.preventDefault();
-          await Register(Username, Password);
+          if (SelectedCurrencyId)
+            await Register(Username, Password, SelectedCurrencyId);
         }}
       >
         <Input
           placeholder="Username"
-          className="border pl-4 rounded-sm"
+          className="border pl-4 rounded-sm w-full"
           value={Username}
           onChange={(e) => {
             setUsername(e.target.value);
@@ -34,8 +41,15 @@ export default function SignUpForm() {
           }}
           placeholder="Password"
           type="password"
-          className="border rounded-sm pl-4"
+          className="border rounded-sm pl-4 w-full"
         ></Input>
+        <div className="w-full">
+          <CurrencyCombobox
+            onValueChange={setSelectedCurrencyId}
+            currencies={currencies}
+          />
+        </div>
+
         <Link
           href="/login"
           className="w-full text-left underline text-accent1 text-xs"

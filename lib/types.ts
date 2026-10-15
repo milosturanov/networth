@@ -41,3 +41,8 @@ export type Transaction = {
   amount: number;
   createdat: Date;
 };
+
+export type Currency = {
+  id: string;
+  name: string;
+};

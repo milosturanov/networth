@@ -10,8 +10,15 @@ import {
   DialogHeader,
   DialogDescription,
 } from "@/components/ui/dialog";
+
+import CurrencyCombobox from "@/components/custom/currencyCombobox";
+
 import { useState } from "react";
+
 import { CreateNewAccount } from "@/lib/app/account";
+
+import { Currency } from "@/lib/types";
+import { redirect } from "next/navigation";
 
 type AccountInfo = {
   id: number;
@@ -31,13 +38,18 @@ type User = {
 export default function AccountsClient({
   accounts,
   userInfo,
+  currencies,
 }: {
   accounts: AccountInfo[];
   userInfo: User;
+  currencies: Currency[];
 }) {
   const [Open, SetOpen] = useState(false);
   const [AccountName, setAccountName] = useState("");
-  const [CurrencyId, setCurrencyId] = useState(0);
+
+  const [SelectedCurrencyId, setSelectedCurrencyId] = useState<string | null>(
+    "",
+  );
 
   return (
     <div className="flex flex-col px-5 pt-5 gap-8">
@@ -99,27 +111,31 @@ export default function AccountsClient({
           <DialogHeader>Add New Account</DialogHeader>
           <form
             onSubmit={async () => {
-              await CreateNewAccount(userInfo.id, AccountName, CurrencyId);
+              if (SelectedCurrencyId)
+                await CreateNewAccount(
+                  userInfo.id,
+                  AccountName,
+                  SelectedCurrencyId,
+                );
+              redirect("/dashboard/accounts");
             }}
           >
-            <DialogDescription className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
               <Input
                 placeholder="Enter Account Name"
                 onChange={(e) => {
                   setAccountName(e.target.value);
                 }}
               />
-              <Input
-                placeholder="Enter Currency Id"
-                onChange={(e) => {
-                  setCurrencyId(Number(e.target.value));
-                }}
+              <CurrencyCombobox
+                onValueChange={setSelectedCurrencyId}
+                currencies={currencies}
               />
 
               <Button type="submit" className="bg-accent1 font-medium text-sm">
                 Finish
               </Button>
-            </DialogDescription>
+            </div>
           </form>
         </DialogContent>
       </Dialog>

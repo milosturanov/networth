@@ -4,18 +4,23 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { pool } from "../db";
 
-import { CreateAccount } from "../app/account";
+import { CreateNewAccount } from "../app/account";
 import { CreateSession } from "./session";
 
-export async function Register(username: string, password: string) {
+export async function Register(
+  username: string,
+  password: string,
+  currencyId: string,
+) {
   const result = await pool.query(
-    "INSERT INTO Users(name,password_hash) VALUES($1, $2) RETURNING id",
-    [username, password],
+    "INSERT INTO Users(name,password_hash,currencyId) VALUES($1, $2, $3 ) RETURNING id",
+    [username, password, currencyId],
   );
 
   const userId = result.rows[0].id;
 
-  await CreateAccount(userId);
+  await CreateNewAccount(userId, "CASH ACCOUNT", currencyId);
+  await CreateNewAccount(userId, "BANK ACCOUNT", currencyId);
   await CreateSession(userId);
 
   redirect("/dashboard");

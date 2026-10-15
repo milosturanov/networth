@@ -8,10 +8,10 @@ export async function LoadUser(userId: number) {
     SELECT
      U.id,
      U.name,
-     C.Code as "currencyCode",
+     C.id as "currencyCode",
      C.name as "currencyName"
     FROM Users U JOIN Currency C
-    ON U.primaryCurrency = C.id
+    ON U.currencyId = C.id
     WHERE U.id = $1`,
     [userId],
   );

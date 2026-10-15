@@ -7,6 +7,7 @@ import { LoadAccounts } from "@/lib/app/account";
 import { LoadUser } from "@/lib/app/user";
 
 import { redirect } from "next/navigation";
+import { LoadCurrencies } from "@/lib/app/currency";
 
 export default async function Accounts() {
   const userId = await GetSession();
@@ -17,6 +18,13 @@ export default async function Accounts() {
 
   const Accounts = await LoadAccounts(userId);
   const UserInfo = await LoadUser(userId);
+  const Currencies = await LoadCurrencies();
 
-  return <AccountsClient accounts={Accounts} userInfo={UserInfo} />;
+  return (
+    <AccountsClient
+      accounts={Accounts}
+      userInfo={UserInfo}
+      currencies={Currencies}
+    />
+  );
 }
