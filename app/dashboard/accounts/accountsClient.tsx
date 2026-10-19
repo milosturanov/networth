@@ -24,7 +24,7 @@ type AccountInfo = {
   id: number;
   name: string;
   balance: number;
-  code: string;
+  currencyId: string;
   rate: number;
 };
 
@@ -50,7 +50,7 @@ export default function AccountsClient({
   const [SelectedCurrencyId, setSelectedCurrencyId] = useState<string | null>(
     "",
   );
-
+  console.log(accounts);
   return (
     <div className="flex flex-col px-5 pt-5 gap-8">
       <Link href="/dashboard">
@@ -80,10 +80,14 @@ export default function AccountsClient({
               <div className="flex flex-col gap-5">
                 <div className="flex flex-col">
                   <h2 className="font-semibold text-sm text-[#EBEBEB]">
-                    {account.balance.toLocaleString("sr-RS")} {account.code}
+                    {Number(account.balance).toLocaleString("de-DE") +
+                      " " +
+                      account.currencyId}
                   </h2>
                   <h1 className="font-semibold text-2xl ">
-                    {(account.balance * account.rate).toLocaleString("de-DE")}{" "}
+                    {Number(account.balance * account.rate).toLocaleString(
+                      "de-DE",
+                    )}{" "}
                     {userInfo.currencyCode}
                   </h1>
                 </div>

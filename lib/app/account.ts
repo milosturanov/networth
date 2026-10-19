@@ -9,7 +9,7 @@ export async function LoadAccounts(userId: number) {
         A.id,
         A.name,
         A.balance,
-        C.id as CurrencyId,
+        C.id as "currencyId",
         ( SELECT Rate From ExchangeRate WHERE firstCurrencyId = A.currencyId AND secondCurrencyId = (SELECT currencyId FROM Users WHERE id = $1)) as Rate
     FROM Account A 
     JOIN Currency C ON A.currencyId = C.id

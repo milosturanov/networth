@@ -9,6 +9,7 @@ type Transaction = {
   accountname: string;
   amount: number;
   createdat: Date;
+  currencyId: string;
 };
 
 export default function TransactionsClient({
@@ -40,7 +41,9 @@ export default function TransactionsClient({
               {transaction.createdat.toLocaleDateString("en-GB")}
             </h1>
             <h1 className="truncate">{transaction.accountname}</h1>
-            <h1 className="truncate">${transaction.amount}</h1>
+            <h1 className="truncate">
+              {transaction.amount + " " + transaction.currencyId}
+            </h1>
             <Link href={`/dashboard/transactions/${transaction.transactionid}`}>
               <CircleChevronRight
                 width={16}

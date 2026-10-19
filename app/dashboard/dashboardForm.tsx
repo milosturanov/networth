@@ -84,7 +84,7 @@ export default function DashboardForm({
   const [transactionName, setTransationName] = useState("");
   const [transactionAmount, setTransactionAmount] = useState(0);
   const [billedAccount, setBilledAccount] = useState(null);
-  console.log(userInfo);
+
   return (
     <>
       <div className="flex flex-col w-full mx-auto px-5 z-10">
@@ -172,7 +172,7 @@ export default function DashboardForm({
         </div>
         <Link
           href="/dashboard/transactions"
-          className="text-xs font-bold w-full py-2 border border-accent3 flex justify-center rounded-xl bg-accent1 text-primary"
+          className="text-xs font-bold w-full py-2 border border-accent3 flex justify-center rounded-bl-xl rounded-br-xl bg-accent1 text-primary"
         >
           VIEW ALL TRANSACTIONS
         </Link>

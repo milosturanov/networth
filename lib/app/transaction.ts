@@ -29,7 +29,8 @@ export async function LoadTransactions(userId: number) {
     T.Name as TransactionName,
     T.CreatedAt as CreatedAt,
     A.Name as AccountName,
-    T.Amount as Amount
+    T.Amount as Amount,
+    A.CurrencyId as "currencyId"
     FROM Transaction T JOIN
     Account A ON T.accountId = A.id
     WHERE T.userId = $1

@@ -7,14 +7,25 @@ import { LoadCategoryOverview } from "@/lib/app/category";
 
 import { redirect } from "next/navigation";
 
-export default async function CategoryOverview() {
+export default async function CategoryOverview({
+  searchParams,
+}: {
+  searchParams: Promise<{ period: string }>;
+}) {
   const userId = await GetSession();
 
   if (!userId) {
     redirect("/login");
   }
 
-  const categoryDetails = await LoadCategoryOverview(userId);
+  const { period } = await searchParams;
+
+  const interval = Number(period);
+
+  const categoryDetails = await LoadCategoryOverview(
+    userId,
+    interval ? interval : 30,
+  );
 
   if (!categoryDetails) {
     return false;

@@ -9,12 +9,30 @@ type categoryDetails = {
 
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox";
+import { useState } from "react";
+
+import { useRouter } from "next/navigation";
 
 export default function CategoryOverviewClient({
   categoryDetails,
 }: {
   categoryDetails: categoryDetails[];
 }) {
+  const router = useRouter();
+
+  const Periods: { name: string; days: number }[] = [
+    { name: "Last Month", days: 30 },
+    { name: "Last Three Months", days: 90 },
+  ];
+
   return (
     <div className="w-full px-5 pt-5 flex flex-col gap-4">
       <Link href="/dashboard">
@@ -23,7 +41,29 @@ export default function CategoryOverviewClient({
           <h1 className="text-2xl font-medium">Category Overview</h1>
         </div>
       </Link>
+      <Combobox
+        items={Periods}
+        onValueChange={(newValue) => {
+          if (newValue) {
+            router.replace(`/dashboard/category-overview?period=${newValue}`);
+          }
+        }}
+      >
+        <ComboboxInput placeholder="Select Period" />
+        <ComboboxContent>
+          <ComboboxList>
+            {Periods.map((item, index) => {
+              return (
+                <ComboboxItem key={index} value={item.days}>
+                  {item.name}
+                </ComboboxItem>
+              );
+            })}
+          </ComboboxList>
 
+          <ComboboxEmpty>No period was found.</ComboboxEmpty>
+        </ComboboxContent>
+      </Combobox>
       <div className="flex flex-col gap-4 w-full">
         {categoryDetails.map((element, index) => {
           return (

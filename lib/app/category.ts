@@ -10,7 +10,7 @@ export async function LoadCategories() {
   return result.rows;
 }
 
-export async function LoadCategoryOverview(userId: number) {
+export async function LoadCategoryOverview(userId: number, period: number) {
   const result = await pool.query(
     `
     SELECT 
@@ -21,10 +21,10 @@ export async function LoadCategoryOverview(userId: number) {
     FROM Transaction T
     JOIN Account A ON T.accountId = A.id
     JOIN Category C ON T.CategoryId = C.id
-    WHERE T.userid = $1
+    WHERE T.userid = $1 AND T.CreatedAt < CURRENT_DATE AND (CURRENT_DATE - T.CreatedAt::DATE) < $2
     GROUP BY C.id
     `,
-    [userId],
+    [userId, period],
   );
 
   try {
