@@ -50,7 +50,6 @@ export default function CategoryOverviewClient({
           return item.name;
         })}
         onValueChange={(newValue: string | null) => {
-          console.log("ON VALUE CHANGE");
           if (!newValue) {
             newValue = selectedPeriod;
           }
