@@ -49,7 +49,8 @@ export default function CategoryOverviewClient({
         items={Periods.map((item) => {
           return item.name;
         })}
-        onValueChange={(newValue: string) => {
+        onValueChange={(newValue: string | null) => {
+          if (!newValue) return;
           setSelectedPeriod(newValue);
 
           Periods.map((item) => {
