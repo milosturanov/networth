@@ -31,7 +31,11 @@ export default function CategoryOverviewClient({
   const Periods: { name: string; days: number }[] = [
     { name: "Last Month", days: 30 },
     { name: "Last Three Months", days: 90 },
+    { name: "Last Six Months", days: 180 },
+    { name: "Last Year", days: 365 },
   ];
+
+  const [selectedPeriod, setSelectedPeriod] = useState("Last Month");
 
   return (
     <div className="w-full px-5 pt-5 flex flex-col gap-4">
@@ -42,19 +46,27 @@ export default function CategoryOverviewClient({
         </div>
       </Link>
       <Combobox
-        items={Periods}
-        onValueChange={(newValue) => {
-          if (newValue) {
-            router.replace(`/dashboard/category-overview?period=${newValue}`);
-          }
+        items={Periods.map((item) => {
+          return item.name;
+        })}
+        onValueChange={(newValue: string) => {
+          setSelectedPeriod(newValue);
+
+          Periods.map((item) => {
+            if (item.name === newValue) {
+              router.replace(
+                `/dashboard/category-overview?period=${item.days}`,
+              );
+            }
+          });
         }}
       >
-        <ComboboxInput placeholder="Select Period" />
+        <ComboboxInput placeholder={`${selectedPeriod}`} />
         <ComboboxContent>
           <ComboboxList>
             {Periods.map((item, index) => {
               return (
-                <ComboboxItem key={index} value={item.days}>
+                <ComboboxItem key={index} value={item.name}>
                   {item.name}
                 </ComboboxItem>
               );

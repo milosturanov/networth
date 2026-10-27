@@ -4,12 +4,13 @@ import { ChevronLeft, ChevronRight, EllipsisVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
+
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogDescription,
-} from "@/components/ui/dialog";
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+} from "@/components/ui/dropdown-menu";
 
 import CurrencyCombobox from "@/components/custom/currencyCombobox";
 
@@ -66,7 +67,17 @@ export default function AccountsClient({
             key={account.id}
           >
             <h1 className="font-semibold text-2xl text-[#ffffff] flex items-center justify-between">
-              {account.name} <EllipsisVertical />
+              {account.name}{" "}
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <EllipsisVertical />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-max bg-transparent border-none shadow-none p-0">
+                  <Button className="text-white bg-[#C9240E] rounded-xl font-semibold">
+                    Delete Account?
+                  </Button>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </h1>
             <div className="flex justify-between items-center">
               <div>
