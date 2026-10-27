@@ -50,8 +50,7 @@ export default function CategoryOverviewClient({
           return item.name;
         })}
         onValueChange={(newValue: string | null) => {
-          if (!newValue) return;
-          setSelectedPeriod(newValue);
+          setSelectedPeriod(newValue!);
 
           Periods.map((item) => {
             if (item.name === newValue) {
