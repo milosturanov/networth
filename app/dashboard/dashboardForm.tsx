@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -26,11 +25,7 @@ import {
 import { SignOut } from "@/lib/auth/auth";
 import { SubmitTransaction } from "@/lib/app/transaction";
 
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-} from "@/components/ui/dropdown-menu";
+import { BarChart, Bar } from "recharts";
 
 const TransactionType = [
   { label: "Select Transaction Type", value: null },
@@ -85,108 +80,90 @@ export default function DashboardForm({
   const [transactionAmount, setTransactionAmount] = useState(0);
   const [billedAccount, setBilledAccount] = useState(null);
 
+  const TestData = [
+    { number: 17, month: "FEB" },
+    { number: 24, month: "MAR" },
+    { number: 34, month: "APR" },
+    { number: 28, month: "MAY" },
+    { number: 47, month: "JUN" },
+    { number: 129, month: "LIVE" },
+  ];
+
   return (
-    <>
-      <div className="flex flex-col w-full mx-auto px-5 z-10">
-        <div className="flex justify-end py-5">
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Image src="/ova 1.png" alt="" width={43} height={43}></Image>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <Button
-                className="bg-accent1"
-                onClick={async () => await SignOut()}
-              >
-                Log Out
-              </Button>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-
-        <div className="flex flex-col max-w-62.5 gap-2 mb-6">
-          <h1 className="text-3xl font-medium">
-            Welcome back, <span className="capitalize">{userInfo.name}</span>!
+    <div className="w-full px-5 py-6 flex flex-col gap-4">
+      {/* Hero Section */}
+      <div className="text-accent2 flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
+          <h1 className="font-bold text-2xl">
+            Welcome back, <br /> <span className="text-[40px]">Miloš!</span>
           </h1>
-          <p className="text-xs font-bold ">
-            Your today’s networth is{" "}
-            <span className="text-accent1">1.2% bigger</span> than yesterday.
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h1 className="font-semibold text-3xl bg-accent2 text-primary text-center py-7 rounded-2xl italic flex-4">
-            {Number(networth).toLocaleString("de-DE", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-            {userInfo.currencyCode}
-          </h1>
-          <div className="flex gap-2">
-            <h1 className="font-semibold text-2xl bg-accent1 text-primary text-center py-5 rounded-2xl italic flex-2">
-              {accountInfo[0].balance}
-            </h1>
-            <h1 className="font-semibold text-2xl bg-accent3 text-primary text-center py-5 rounded-2xl italic flex-2">
-              {accountInfo[1].balance}
+          {/* Your todays networth is... */}
+          <div className="flex flex-col ">
+            <h1 className="font-thin text-xs">YOUR TODAYS NETWORTH IS</h1>
+            <h1 className="text-[40px] text-accent1 font-semibold">
+              129.452 <span className="text-xl">rsd</span>
             </h1>
           </div>
-          <Link
-            href="/dashboard/accounts"
-            className="text-xs font-regular w-full py-2 border border-accent3 flex justify-center rounded-xl"
-          >
-            VIEW ALL ACCOUNTS
-          </Link>
-          <Link
-            href="/dashboard/category-overview"
-            className="text-xs font-bold w-full py-2 border border-accent3 flex justify-center rounded-xl bg-accent1 text-primary"
-          >
-            VIEW CATEGORY DETAILS
-          </Link>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          {/* Networth slider */}
+          <div className="w-full bg-secondary rounded-[6px] h-2.25 flex items-center pl-0.5">
+            <div className="w-[68.5%] bg-accent1 h-1 rounded-[6px]" />
+          </div>
+          {/* Slider text follow up */}
+          <div className="flex w-full justify-end">
+            <h1 className="flex gap-2 font-bold text-xl items-center">
+              / 150.000<span className="text-xs text-accent1">68.5%</span>
+            </h1>
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-col px-5 mx-auto">
-        <h1 className="font-medium text-xl mb-2 mt-4">Last Transactions</h1>
-        <div className="grid grid-cols-4 text-nowrap text-center text-primary bg-accent1 gap-2 py-2.5 rounded-t-lg text-sm">
-          <h2>Name</h2>
-          <h2>Date</h2>
-          <h2 className="truncate">Billed Account</h2>
-          <h2>Amount</h2>
-        </div>
-        <div className="flex flex-col">
-          {transactionInfo.slice(0, 5).map((transaction, index) => {
+      {/* NETWORTH LAST 6 MONTHS */}
+      <div className="w-full h-50 rounded-[20px] bg-secondary p-6 flex  flex-col gap-4">
+        <h1 className="text-xs font-light text-accent2">
+          NETWORTH LAST 6 MONTHS
+        </h1>
+        <div className="flex gap-6 w-full h-full items-end mx-auto">
+          {TestData.map((element, index) => {
             return (
-              <div
-                className="grid grid-cols-4 gap-2 text-sm text-center p-2 border-b"
-                key={index}
-              >
-                <h2 className="truncate">{transaction.transactionname}</h2>
-                <h2 className="truncate">
-                  {transaction.createdat.toLocaleDateString("en-GB")}
-                </h2>
-                <h2 className="truncate">{transaction.accountname}</h2>
-                <h2 className="truncate">{transaction.amount}</h2>
+              <div className="flex flex-col gap-1 items-center" key={index}>
+                <h1 className="font-semibold text-sm text-accent1">
+                  {element.number + "k"}{" "}
+                </h1>
+                <div
+                  className="w-5 bg-accent1 rounded-t-[6px]"
+                  style={{ height: ((element.number + 40) / 129) * 60 }}
+                ></div>
+                <h1 className="text-[10px] font-semibold text-accent2">
+                  {element.month}
+                </h1>
               </div>
             );
           })}
         </div>
-        <Link
-          href="/dashboard/transactions"
-          className="text-xs font-bold w-full py-2 border border-accent3 flex justify-center rounded-bl-xl rounded-br-xl bg-accent1 text-primary"
+      </div>
+
+      {/* Dashboard Buttons Add Transaction & View All Accounts */}
+      <div className="w-full mx-auto flex flex-col gap-2">
+        <Button
+          onClick={() => {
+            setOpen(true);
+          }}
+          className="text-xs font-regular w-full py-2 bg-secondary text-accent2 flex justify-center rounded-xl"
         >
-          VIEW ALL TRANSACTIONS
+          ADD TRANSACTION
+        </Button>
+        <Link
+          href="/dashboard/category-overview"
+          className="text-xs font-bold w-full py-2 border border-accent3 flex justify-center rounded-xl bg-accent1 text-primary"
+        >
+          VIEW ALL ACCOUNTS
         </Link>
       </div>
 
-      <Button
-        className="flex items-center fixed justify-center text-[50px] font-light bg-secondary text-primary rounded-full w-12.5 h-12.5 bottom-5 right-5 "
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
-        +
-      </Button>
-
+      {/* Dialog for Adding New Transaction will be placed at /add-transaction soon*/}
       <Dialog open={Open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
@@ -288,14 +265,6 @@ export default function DashboardForm({
           </DialogHeader>
         </DialogContent>
       </Dialog>
-
-      <Image
-        src="/dashboardCircles.svg"
-        width={225}
-        height={225}
-        alt="dashboardCircles"
-        className="absolute top-0 right-0"
-      />
-    </>
+    </div>
   );
 }
