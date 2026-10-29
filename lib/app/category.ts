@@ -21,7 +21,7 @@ export async function LoadCategoryOverview(userId: number, period: number) {
     FROM Transaction T
     JOIN Account A ON T.accountId = A.id
     JOIN Category C ON T.CategoryId = C.id
-    WHERE T.userid = $1 AND T.CreatedAt < CURRENT_DATE AND (CURRENT_DATE - T.CreatedAt::DATE) < $2
+    WHERE T.userid = $1 AND T.CreatedAt < CURRENT_TIMESTAMP AND (CURRENT_DATE - T.CreatedAt::DATE) < $2
     GROUP BY C.id
     `,
     [userId, period],

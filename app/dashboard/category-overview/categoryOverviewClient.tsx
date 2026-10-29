@@ -7,7 +7,7 @@ type categoryDetails = {
   hexCode: string;
 };
 
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import {
   Combobox,
@@ -16,6 +16,7 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
+  ComboboxValue,
 } from "@/components/ui/combobox";
 import { useState } from "react";
 
@@ -40,8 +41,8 @@ export default function CategoryOverviewClient({
   return (
     <div className="w-full px-5 pt-5 flex flex-col gap-4">
       <Link href="/dashboard">
-        <div className="flex items-center gap-4">
-          <ChevronLeft width={32} height={32} />
+        <div className="flex items-center gap-4 text-accent2">
+          <ChevronLeft width={50} height={50} />
           <h1 className="text-2xl font-medium">Category Overview</h1>
         </div>
       </Link>
@@ -64,8 +65,12 @@ export default function CategoryOverviewClient({
           });
         }}
       >
-        <ComboboxInput placeholder={`${selectedPeriod}`} />
-        <ComboboxContent>
+        <ComboboxInput
+          className="border-none !text-accent2 !bg-secondary"
+          value={selectedPeriod}
+        />
+
+        <ComboboxContent className="!bg-secondary !text-accent2">
           <ComboboxList>
             {Periods.map((item, index) => {
               return (
@@ -79,7 +84,7 @@ export default function CategoryOverviewClient({
           <ComboboxEmpty>No period was found.</ComboboxEmpty>
         </ComboboxContent>
       </Combobox>
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col gap-5 w-full">
         {categoryDetails.map((element, index) => {
           return (
             <div
@@ -88,7 +93,7 @@ export default function CategoryOverviewClient({
               key={index}
             >
               <div className="w-1 h-full bg-primary" />
-              <div className="w-full  text-primary  pt-5 pb-7  ">
+              <div className="w-full  text-accent2  pt-5 pb-7  ">
                 <div className="flex flex-col items-center">
                   <div className="flex flex-col gap-7">
                     <h1 className="font-bold text-xl">

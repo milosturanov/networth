@@ -81,12 +81,12 @@ export default function DashboardForm({
   const [billedAccount, setBilledAccount] = useState(null);
 
   const TestData = [
-    { number: 17, month: "FEB" },
-    { number: 24, month: "MAR" },
-    { number: 34, month: "APR" },
-    { number: 28, month: "MAY" },
-    { number: 47, month: "JUN" },
-    { number: 129, month: "LIVE" },
+    { number: 17000, month: "FEB" },
+    { number: 50000, month: "MAR" },
+    { number: 74000, month: "APR" },
+    { number: 55000, month: "MAY" },
+    { number: 90000, month: "JUN" },
+    { number: 129452, month: "LIVE" },
   ];
 
   return (
@@ -125,16 +125,16 @@ export default function DashboardForm({
         <h1 className="text-xs font-light text-accent2">
           NETWORTH LAST 6 MONTHS
         </h1>
-        <div className="flex gap-6 w-full h-full items-end mx-auto">
+        <div className="flex gap-6 w-full h-full items-end justify-center">
           {TestData.map((element, index) => {
             return (
               <div className="flex flex-col gap-1 items-center" key={index}>
                 <h1 className="font-semibold text-sm text-accent1">
-                  {element.number + "k"}{" "}
+                  {Math.round(element.number / 1000) + "k"}{" "}
                 </h1>
                 <div
                   className="w-5 bg-accent1 rounded-t-[6px]"
-                  style={{ height: ((element.number + 40) / 129) * 60 }}
+                  style={{ height: (element.number / 129452) * 60 + 15 }}
                 ></div>
                 <h1 className="text-[10px] font-semibold text-accent2">
                   {element.month}
@@ -156,7 +156,7 @@ export default function DashboardForm({
           ADD TRANSACTION
         </Button>
         <Link
-          href="/dashboard/category-overview"
+          href="/dashboard/accounts"
           className="text-xs font-bold w-full py-2 border border-accent3 flex justify-center rounded-xl bg-accent1 text-primary"
         >
           VIEW ALL ACCOUNTS
