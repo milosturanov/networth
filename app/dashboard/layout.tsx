@@ -1,3 +1,6 @@
+"use client";
+
+import { SignOut } from "@/lib/auth/auth";
 import { Home, ChartLine, UserGroup, CircleUserRound } from "lucide-react";
 import Link from "next/link";
 
@@ -16,7 +19,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Link href="#">
             <UserGroup width={24} height={24} />
           </Link>
-          <Link href="#">
+          <Link href="#" onClick={() => SignOut()}>
             <CircleUserRound width={24} height={24} />
           </Link>
         </div>

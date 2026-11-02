@@ -64,3 +64,41 @@ export async function CalculateNetworth(userId: number) {
 
   return result.rows[0];
 }
+
+export async function NetworthLastSixMonths(userId: number) {
+  const result = await pool.query(
+    `
+    WITH NetworthReport as (
+    WITH MonthlyBalance as ( SELECT 
+	    EXTRACT(YEAR FROM T.CreatedAt) as YEAR,
+	    EXTRACT(MONTH FROM T.CreatedAt) as MONTH,
+	    sum(
+		    CASE
+			    WHEN T.TransactionTypeId = 'INC' THEN T.Amount
+			    WHEN T.TransactionTypeId = 'EXP' THEN -T.Amount
+			    ELSE 0
+		    END
+	        ) as Difference
+    FROM Transaction T 
+    WHERE Userid = $1
+    GROUP BY EXTRACT(YEAR FROM T.CreatedAt),EXTRACT(MONTH FROM T.CreatedAt))
+
+    SELECT 
+      YEAR,
+      MONTH,
+      SUM(difference) OVER (
+        ORDER BY YEAR, MONTH
+      ) as NetWorth,
+      TRUE as "isUser"
+    FROM MonthlyBalance
+    ORDER BY YEAR desc, MONTH desc
+    LIMIT 6)
+    
+    SELECT * FROM NetworthReport
+    ORDER BY YEAR, MONTH ASC
+    `,
+    [userId],
+  );
+
+  return result.rows;
+}
