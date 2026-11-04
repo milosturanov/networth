@@ -30,7 +30,7 @@ export function CompleteNetworth(NetworthLast6: NetworthLast6[]) {
 
   while (NetworthLast6.length != 6) {
     month++;
-    networth = networth * 1.3 + 1000;
+    networth = networth * 1.25;
 
     if (month === 13) {
       month = 1;

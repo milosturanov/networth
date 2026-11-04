@@ -142,7 +142,7 @@ export default function DashboardForm({
                   {Math.round(element.networth / 1000) + "k"}{" "}
                 </h1>
                 <div
-                  className={`w-5 ${element.isUser ? "bg-accent1" : "bg-[#616060]"} rounded-t-[6px] min-h-8 max-h-30 `}
+                  className={`w-5 ${element.isUser ? "bg-accent1" : "bg-[#616765]"} rounded-t-[6px] min-h-8 max-h-30 `}
                   style={{
                     height:
                       (element.networth / NetworthBars.at(-1)?.networth!) * 60 +
@@ -166,17 +166,15 @@ export default function DashboardForm({
 
       {/* Dashboard Buttons Add Transaction & View All Accounts */}
       <div className="w-full mx-auto flex flex-col gap-2">
-        <Button
-          onClick={() => {
-            setOpen(true);
-          }}
+        <Link
+          href="/dashboard/submit-transaction"
           className="text-xs font-regular w-full py-2 bg-secondary text-accent2 flex justify-center rounded-xl"
         >
           ADD TRANSACTION
-        </Button>
+        </Link>
         <Link
           href="/dashboard/accounts"
-          className="text-xs font-bold w-full py-2 border border-accent3 flex justify-center rounded-xl bg-accent1 text-primary"
+          className="text-xs font-bold w-full py-2 flex justify-center rounded-xl bg-accent1 text-primary"
         >
           VIEW ALL ACCOUNTS
         </Link>

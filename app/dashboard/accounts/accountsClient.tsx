@@ -55,8 +55,8 @@ export default function AccountsClient({
   return (
     <div className="flex flex-col px-5 pt-5 gap-8">
       <Link href="/dashboard">
-        <div className="flex items-center gap-4">
-          <ChevronLeft width={32} height={32} />
+        <div className="flex items-center gap-4 text-accent2!">
+          <ChevronLeft width={50} height={50} />
           <h1 className="text-2xl font-medium">Accounts Overview</h1>
         </div>
       </Link>
