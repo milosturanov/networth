@@ -1,62 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectValue,
-  SelectGroup,
-  SelectLabel,
-  SelectItem,
-} from "@/components/ui/select";
 
-import { SubmitTransaction } from "@/lib/app/transaction";
 import { CompleteNetworth } from "@/lib/formatData/actions";
 
-const TransactionType = [
-  { label: "Select Transaction Type", value: null },
-  { label: "Expense", value: "EXP" },
-  { label: "Income", value: "INC" },
-];
-
-type User = {
-  id: number;
-  name: string;
-  currencyCode: string;
-  currencyName: string;
-};
-
-type Account = {
-  id: number;
-  userId: number;
-  name: string;
-  balance: number;
-  createdAt: Date;
-};
-
-type Transaction = {
-  transactionname: string;
-  createdat: Date;
-  accountname: string;
-  amount: number;
-};
-
-type Category = {
-  id: number;
-  name: string;
-};
+import { User } from "@/lib/types";
 
 type NetworthLast6 = {
   year: number;
@@ -67,33 +15,19 @@ type NetworthLast6 = {
 
 export default function DashboardForm({
   userInfo,
-  accountInfo,
-  transactionInfo,
-  category,
   networth,
   networthLast6,
 }: {
   userInfo: User;
-  accountInfo: Account[];
-  transactionInfo: Transaction[];
-  category: Category[];
   networth: number;
   networthLast6: NetworthLast6[];
 }) {
-  const [Open, setOpen] = useState(false);
-  const [transactionCategory, setTransactionCategory] = useState(null);
-  const [transactionType, setTransactionType] = useState(null);
-  const [transactionName, setTransationName] = useState("");
-  const [transactionAmount, setTransactionAmount] = useState(0);
-  const [billedAccount, setBilledAccount] = useState(null);
-
   if (networthLast6.length < 6) {
     var NetworthBars = CompleteNetworth(networthLast6);
   } else {
     NetworthBars = networthLast6;
   }
 
-  console.log(NetworthBars);
   return (
     <div className="w-full px-5 py-6 flex flex-col gap-4">
       {/* Hero Section */}
@@ -115,12 +49,18 @@ export default function DashboardForm({
         <div className="flex flex-col gap-1">
           {/* Networth slider */}
           <div className="w-full bg-secondary rounded-[6px] h-2.25 flex items-center pl-0.5">
-            <div className="w-[68.5%] bg-accent1 h-1 rounded-[6px]" />
+            <div
+              className="bg-accent1 h-1 rounded-[6px]"
+              style={{ width: (networth / userInfo.networthGoal) * 100 + "%" }}
+            />
           </div>
           {/* Slider text follow up */}
           <div className="flex w-full justify-end">
             <h1 className="flex gap-2 font-bold text-xl items-center">
-              / 150.000<span className="text-xs text-accent1">68.5%</span>
+              / {userInfo.networthGoal.toLocaleString("de-DE")}
+              <span className="text-xs text-accent1">
+                {(networth / userInfo.networthGoal) * 100 + "%"}
+              </span>
             </h1>
           </div>
         </div>
@@ -179,109 +119,6 @@ export default function DashboardForm({
           VIEW ALL ACCOUNTS
         </Link>
       </div>
-
-      {/* Dialog for Adding New Transaction will be placed at /add-transaction soon*/}
-      <Dialog open={Open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Transaction</DialogTitle>
-            <form
-              onSubmit={async () => {
-                await SubmitTransaction(
-                  transactionName,
-                  userInfo.id,
-                  transactionType!,
-                  transactionCategory!,
-                  billedAccount!,
-                  transactionAmount,
-                );
-              }}
-            >
-              <DialogDescription className="flex flex-col gap-2">
-                <Label>Transaction Name</Label>
-
-                <Input
-                  placeholder="breakfast, groceries, paycheck"
-                  className="text-sm"
-                  onChange={(e) => setTransationName(e.target.value)}
-                />
-                <Select
-                  items={TransactionType}
-                  onValueChange={setTransactionType}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Transaction Type</SelectLabel>
-                      {TransactionType.map((transaction) => (
-                        <SelectItem
-                          key={transaction.value}
-                          value={transaction.value}
-                        >
-                          {transaction.label}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                <Select
-                  items={category.map((item) => ({
-                    label: item.name,
-                    value: item.id,
-                  }))}
-                  onValueChange={setTransactionCategory}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Category</SelectLabel>
-                      {category.map((item) => (
-                        <SelectItem key={item.id} value={item.id}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                <Select
-                  items={accountInfo.map((account) => ({
-                    label: account.name,
-                    value: account.id,
-                  }))}
-                  onValueChange={setBilledAccount}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select Billed Account" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Category</SelectLabel>
-                      {accountInfo.map((item) => (
-                        <SelectItem key={item.id} value={item.id}>
-                          {item.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                <Label>Amount</Label>
-                <Input
-                  placeholder="$49.99"
-                  className="text-sm"
-                  onChange={(e) => setTransactionAmount(Number(e.target.value))}
-                />
-                <Button className="bg-accent1" type="submit">
-                  Submit Transaction
-                </Button>
-              </DialogDescription>
-            </form>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

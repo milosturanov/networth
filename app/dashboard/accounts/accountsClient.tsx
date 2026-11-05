@@ -51,7 +51,7 @@ export default function AccountsClient({
   const [SelectedCurrencyId, setSelectedCurrencyId] = useState<string | null>(
     "",
   );
-  console.log(accounts);
+
   return (
     <div className="flex flex-col px-5 pt-5 gap-8">
       <Link href="/dashboard">

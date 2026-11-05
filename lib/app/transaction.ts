@@ -7,18 +7,18 @@ import { redirect } from "next/navigation";
 export async function SubmitTransaction(
   name: string,
   userId: number,
-  transactionTypeId: string,
   categoryId: number,
   accountId: number,
   amount: number,
+  description: string | null,
 ) {
-  await pool.query(
-    "INSERT INTO Transaction(name,userId,transactionTypeId,categoryId,accountId,amount) VALUES($1,$2,$3,$4,$5,$6)",
-    [name, userId, transactionTypeId, categoryId, accountId, amount],
+  const result = await pool.query(
+    "INSERT INTO Transaction(name,userId,categoryId,accountId,amount,description) VALUES($1,$2,$3,$4,$5,$6)",
+    [name, userId, categoryId, accountId, amount, description],
   );
   await AccountRebalance(accountId);
 
-  redirect("/dashboard");
+  return result.rows[0];
 }
 
 export async function LoadTransactions(userId: number) {

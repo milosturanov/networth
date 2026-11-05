@@ -3,6 +3,8 @@
 export type User = {
   id: number;
   name: string;
+  currencyId: string;
+  networthGoal: number;
   password_hash: string;
 };
 
@@ -20,15 +22,19 @@ export type TransactionType = {
 
 export type Account = {
   id: number;
-  userid: number;
+  userId: number;
   name: string;
   balance: number;
-  createdat: Date;
+  createdAt: Date;
+  currencyId: string;
+  hexCode: string;
 };
 
 export type Category = {
   id: number;
   name: string;
+  hexCode: string;
+  categoryType: string;
 };
 
 export type Transaction = {

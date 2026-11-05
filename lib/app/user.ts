@@ -6,13 +6,12 @@ export async function LoadUser(userId: number) {
   const result = await pool.query(
     `
     SELECT
-     U.id,
-     U.name,
-     C.id as "currencyCode",
-     C.name as "currencyName"
-    FROM Users U JOIN Currency C
-    ON U.currencyId = C.id
-    WHERE U.id = $1`,
+     id,
+     name,
+     currencyid as "currencyId",
+     networthgoal as "networthGoal"
+    FROM Users
+    WHERE id =$1`,
     [userId],
   );
 

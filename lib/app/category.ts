@@ -3,9 +3,16 @@
 import { pool } from "../db";
 
 export async function LoadCategories() {
-  const result = await pool.query(`
-    SELECT * FROM Category
-    `);
+  const result = await pool.query(
+    `
+    SELECT 
+      id,
+      name,
+      hexcode as "hexCode",
+      categorytype as "categoryType"
+    FROM Category
+    `,
+  );
 
   return result.rows;
 }

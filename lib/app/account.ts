@@ -1,7 +1,6 @@
 "use server";
 
 import { pool } from "../db";
-import { redirect } from "next/navigation";
 
 export async function LoadAccounts(userId: number) {
   const result = await pool.query(
@@ -14,6 +13,28 @@ export async function LoadAccounts(userId: number) {
     FROM Account A 
     JOIN Currency C ON A.currencyId = C.id
     WHERE userId = $1 ORDER BY A.id asc`,
+    [userId],
+  );
+
+  try {
+    return result.rows;
+  } catch {
+    return [];
+  }
+}
+
+export async function LoadAccountsById(userId: number) {
+  const result = await pool.query(
+    `SELECT 
+        id,
+        userid as "userId",
+        name,
+        balance,
+        createdat as "createdAt",
+        currencyid as "currencyId",
+        hexcode as "hexCode"
+    FROM Account
+    WHERE userId = $1 ORDER BY id asc`,
     [userId],
   );
 
@@ -40,9 +61,13 @@ export async function AccountRebalance(accountId: number) {
     `
     UPDATE Account
       SET balance = (
-	      (SELECT COALESCE(SUM(amount),0) FROM Transaction WHERE accountId = $1 AND TransactionTypeId = 'INC')
+	      (SELECT COALESCE(SUM(amount),0) 
+        FROM Transaction T JOIN Category C ON T.categoryid = C.id
+        WHERE accountId = $1 AND C.categorytype = 'INC')
 	      -
-	      (SELECT COALESCE(SUM(amount),0) FROM Transaction WHERE accountId = $1 AND TransactionTypeId = 'EXP'))
+	      (SELECT COALESCE(SUM(amount),0) 
+        FROM Transaction T JOIN Category C ON T.categoryid = C.id
+        WHERE accountId = $1 AND C.categorytype = 'EXP'))
 	      WHERE id = $1
     `,
     [accountId],
@@ -74,12 +99,13 @@ export async function NetworthLastSixMonths(userId: number) {
 	    EXTRACT(MONTH FROM T.CreatedAt) as MONTH,
 	    sum(
 		    CASE
-			    WHEN T.TransactionTypeId = 'INC' THEN T.Amount
-			    WHEN T.TransactionTypeId = 'EXP' THEN -T.Amount
+			    WHEN C.categorytype = 'INC' THEN T.Amount
+			    WHEN C.categorytype = 'EXP' THEN -T.Amount
 			    ELSE 0
 		    END
 	        ) as Difference
     FROM Transaction T 
+    JOIN Category C ON T.CategoryId = C.id
     WHERE Userid = $1
     GROUP BY EXTRACT(YEAR FROM T.CreatedAt),EXTRACT(MONTH FROM T.CreatedAt))
 
