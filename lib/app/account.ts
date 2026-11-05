@@ -99,14 +99,15 @@ export async function NetworthLastSixMonths(userId: number) {
 	    EXTRACT(MONTH FROM T.CreatedAt) as MONTH,
 	    sum(
 		    CASE
-			    WHEN C.categorytype = 'INC' THEN T.Amount
-			    WHEN C.categorytype = 'EXP' THEN -T.Amount
+			    WHEN C.categorytype = 'INC' THEN (T.Amount * (SELECT Rate FROM ExchangeRate WHERE firstCurrencyid = A.currencyId AND secondCurrencyId = (SELECT currencyId FROM Users where id = $1)))
+			    WHEN C.categorytype = 'EXP' THEN (-T.Amount * (SELECT Rate FROM ExchangeRate WHERE firstCurrencyid = A.currencyId AND secondCurrencyId = (SELECT currencyId FROM Users where id = $1)))
 			    ELSE 0
 		    END
 	        ) as Difference
     FROM Transaction T 
     JOIN Category C ON T.CategoryId = C.id
-    WHERE Userid = $1
+    JOIN Account A ON T.accountid = A.id
+    WHERE T.Userid = $1
     GROUP BY EXTRACT(YEAR FROM T.CreatedAt),EXTRACT(MONTH FROM T.CreatedAt))
 
     SELECT 
