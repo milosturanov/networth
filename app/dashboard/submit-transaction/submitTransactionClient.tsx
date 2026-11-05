@@ -359,7 +359,7 @@ export default function SubmitTransactionClient({
                   userId,
                   selectedCategory,
                   selectedAccount,
-                  Number(selectedAmount),
+                  Number(selectedAmount.replace(",", ".")),
                   selectedDescription,
                 );
 
