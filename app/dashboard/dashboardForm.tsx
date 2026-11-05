@@ -59,7 +59,8 @@ export default function DashboardForm({
             <h1 className="flex gap-2 font-bold text-xl items-center">
               / {userInfo.networthGoal.toLocaleString("de-DE")}
               <span className="text-xs text-accent1">
-                {(networth / userInfo.networthGoal) * 100 + "%"}
+                {Math.round((networth / userInfo.networthGoal) * 100) / 10 +
+                  "%"}
               </span>
             </h1>
           </div>
