@@ -17,3 +17,14 @@ export async function LoadUser(userId: number) {
 
   return result.rows[0];
 }
+
+export async function UpdateNetworthGoal(userId: number, nextGoal: number) {
+  await pool.query(
+    `
+    UPDATE Users
+    SET NetworthGoal = $1
+    WHERE id = $2
+    `,
+    [nextGoal, userId],
+  );
+}
