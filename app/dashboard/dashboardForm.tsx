@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 
+import { motion } from "framer-motion";
+
 import { CompleteNetworth } from "@/lib/formatData/actions";
 import { PartyPopper } from "lucide-react";
 
@@ -58,9 +60,10 @@ export default function DashboardForm({
           <div className="flex flex-col gap-1">
             {/* Networth slider */}
             <div className="w-full bg-secondary rounded-[6px] h-2.25 flex items-center pl-0.5">
-              <div
+              <motion.div
                 className="bg-accent1 h-1 rounded-[6px]"
-                style={{
+                initial={{ width: "0%" }}
+                animate={{
                   width: (networth / userInfo.networthGoal) * 100 + "%",
                 }}
               />
@@ -78,30 +81,34 @@ export default function DashboardForm({
         </div>
 
         {/* NETWORTH LAST 6 MONTHS */}
-        <div className="w-full rounded-[20px] bg-secondary p-6 flex  flex-col gap-4">
+        <div className="w-full rounded-[20px] bg-secondary p-6 flex  flex-col gap-4 h-[230px] ">
           <h1 className="text-xs font-light text-accent2">
             NETWORTH LAST 6 MONTHS
           </h1>
-          <div className="flex gap-6 w-full h-full max-h- items-end justify-center">
+          <div className="flex gap-6 w-full h-full items-end justify-center">
             {NetworthBars.map((element, index) => {
               return (
                 /* One of 6 candles in Networth*/
-                <div className="flex flex-col gap-1 items-center" key={index}>
+                <div
+                  className="flex flex-col gap-1 items-center h-full justify-end"
+                  key={index}
+                >
                   <h1
                     className={`font-semibold text-sm text-accent1 ${!element.isUser ? "hidden" : ""}`}
                   >
                     {Math.round(element.networth / 1000) + "k"}{" "}
                   </h1>
-                  <div
-                    className={`w-5 ${element.isUser ? "bg-accent1" : "bg-[#616765]"} rounded-t-[6px] min-h-8 max-h-30 `}
-                    style={{
+                  <motion.div
+                    className={`w-5 ${element.isUser ? "bg-accent1" : "bg-[#616765]"} rounded-t-[6px]  max-h-30 `}
+                    initial={{ height: "0%" }}
+                    animate={{
                       height:
-                        (element.networth / NetworthBars.at(-1)?.networth!) *
-                          60 +
-                        17 +
-                        30,
+                        (
+                          (element.networth / NetworthBars.at(-1)?.networth!) *
+                          100
+                        ).toString() + "%",
                     }}
-                  ></div>
+                  ></motion.div>
                   <h1
                     className={`text-[10px] font-semibold text-accent2 uppercase `}
                   >
