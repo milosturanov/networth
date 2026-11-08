@@ -32,7 +32,8 @@ export async function LoadAccountsById(userId: number) {
         balance,
         createdat as "createdAt",
         currencyid as "currencyId",
-        hexcode as "hexCode"
+        hexcode as "hexCode",
+        ( SELECT Rate From ExchangeRate WHERE firstCurrencyId = currencyid AND secondCurrencyId = (SELECT currencyId FROM Users WHERE id = $1)) as Rate
     FROM Account
     WHERE userId = $1 ORDER BY id asc`,
     [userId],

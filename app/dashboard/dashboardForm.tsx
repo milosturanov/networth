@@ -2,12 +2,10 @@
 
 import Link from "next/link";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { CompleteNetworth } from "@/lib/formatData/actions";
 import { PartyPopper } from "lucide-react";
-
-import { redirect } from "next/navigation";
 
 import { User } from "@/lib/types";
 import { useState } from "react";
@@ -99,7 +97,7 @@ export default function DashboardForm({
                     {Math.round(element.networth / 1000) + "k"}{" "}
                   </h1>
                   <motion.div
-                    className={`w-5 ${element.isUser ? "bg-accent1" : "bg-[#616765]"} rounded-t-[6px]  max-h-30 `}
+                    className={`w-5 ${element.isUser ? "opacity-100" : "opacity-20"} rounded-t-[6px]  max-h-30 bg-accent1 `}
                     initial={{ height: "0%" }}
                     animate={{
                       height:
@@ -139,52 +137,60 @@ export default function DashboardForm({
           </Link>
         </div>
       </div>
+      <AnimatePresence>
+        {/* Goal Reached Pop Up*/}
+        {networth > userInfo.networthGoal && (
+          <div
+            className="absolute top-0 right-0 left-0 bottom-0 z-101 w-full h-full px-5 flex items-center justify-center backdrop-blur-[10px]"
+            style={{
+              visibility:
+                networth > userInfo.networthGoal ? "visible" : "hidden",
+            }}
+          >
+            {/* Pop Up */}
 
-      {/* Goal Reached Pop Up*/}
-      <div
-        className="absolute top-0 right-0 left-0 bottom-0 z-101 w-full h-full px-5 flex items-center justify-center backdrop-blur-[10px]"
-        style={{
-          visibility: networth > userInfo.networthGoal ? "visible" : "hidden",
-        }}
-      >
-        {/* Pop Up */}
-        <div className="w-full h-max flex flex-col px-5 py-8 gap-8 bg-secondary rounded-[20px]">
-          {/* Congratulation Text */}
-          <div className="w-full flex flex-col mx-auto gap-2 items-center text-accent1  text-center">
-            <PartyPopper height={100} width={100} strokeWidth={0.5} />
-            <h1 className="text-xl font-semibold spacing tracking-tight">
-              Congrats on reaching your goal!
-            </h1>
-            <p className="text-sm font-normal text-accent2">
-              Your New Goal is right behind corner. <br />
-              <span className="text-accent1 font-semibold text-base">
-                Good Luck!
-              </span>
-            </p>
-          </div>
-          {/* Input & Confirm Button */}
-          <div className="flex flex-col gap-4">
-            <input
-              type="number"
-              className="bg-[#2A2929] rounded-[8px] w-full px-4 py-2 text-base font-normal text-accent2"
-              placeholder="New Goal"
-              onChange={(e) => {
-                setNextGoal(e.target.value);
-              }}
-            />
-            <button
-              className="w-full py-2 text-accent1 font-light text-base border-accent1 border-[0.5px]  rounded-[8px]"
-              onClick={async () => {
-                await UpdateNetworthGoal(userInfo.id, Number(nextGoal));
-
-                redirect("/dashboard");
-              }}
+            <motion.div
+              className="w-full h-max flex flex-col px-5 py-8 gap-8 bg-secondary rounded-[20px]"
+              initial={{ y: "-100vh", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: "100vh", opacity: 0 }}
             >
-              CONFIRM
-            </button>
+              {/* Congratulation Text */}
+              <div className="w-full flex flex-col mx-auto gap-2 items-center text-accent1  text-center">
+                <PartyPopper height={100} width={100} strokeWidth={0.5} />
+                <h1 className="text-xl font-semibold spacing tracking-tight">
+                  Congrats on reaching your goal!
+                </h1>
+                <p className="text-sm font-normal text-accent2">
+                  Your New Goal is right behind corner. <br />
+                  <span className="text-accent1 font-semibold text-base">
+                    Good Luck!
+                  </span>
+                </p>
+              </div>
+              {/* Input & Confirm Button */}
+              <div className="flex flex-col gap-4">
+                <input
+                  type="number"
+                  className="bg-[#2A2929] rounded-[8px] w-full px-4 py-2 text-base font-normal text-accent2"
+                  placeholder="New Goal"
+                  onChange={(e) => {
+                    setNextGoal(e.target.value);
+                  }}
+                />
+                <button
+                  className="w-full py-2 text-accent1 font-light text-base border-accent1 border-[0.5px]  rounded-[8px]"
+                  onClick={async () => {
+                    await UpdateNetworthGoal(userInfo.id, Number(nextGoal));
+                  }}
+                >
+                  CONFIRM
+                </button>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

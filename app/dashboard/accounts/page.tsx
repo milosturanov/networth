@@ -3,7 +3,7 @@
 import AccountsClient from "./accountsClient";
 
 import { GetSession } from "@/lib/auth/session";
-import { LoadAccounts } from "@/lib/app/account";
+import { LoadAccountsById } from "@/lib/app/account";
 import { LoadUser } from "@/lib/app/user";
 
 import { redirect } from "next/navigation";
@@ -16,7 +16,7 @@ export default async function Accounts() {
     redirect("/login");
   }
 
-  const Accounts = await LoadAccounts(userId);
+  const Accounts = await LoadAccountsById(userId);
   const UserInfo = await LoadUser(userId);
   const Currencies = await LoadCurrencies();
 

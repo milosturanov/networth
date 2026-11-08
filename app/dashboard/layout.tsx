@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 export default function RootLayout({ children }: LayoutProps<"/">) {
   const pathName = usePathname();
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <body className={`min-h-full flex flex-col`}>
         {children}
         {pathName !== "/dashboard/submit-transaction" && (

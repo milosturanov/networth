@@ -1,6 +1,7 @@
 "use server";
 
 import { pool } from "../db";
+import { revalidatePath } from "next/cache";
 
 export async function LoadUser(userId: number) {
   const result = await pool.query(
@@ -27,4 +28,6 @@ export async function UpdateNetworthGoal(userId: number, nextGoal: number) {
     `,
     [nextGoal, userId],
   );
+
+  revalidatePath("/dashboard");
 }

@@ -20,20 +20,24 @@ import { CreateNewAccount } from "@/lib/app/account";
 
 import { Currency } from "@/lib/types";
 import { redirect } from "next/navigation";
+import { div } from "framer-motion/client";
 
 type AccountInfo = {
   id: number;
+  userId: number;
   name: string;
   balance: number;
+  createdAt: string;
   currencyId: string;
+  hexCode: string;
   rate: number;
 };
 
 type User = {
   id: number;
   name: string;
-  currencyCode: string;
-  currencyName: string;
+  currencyId: string;
+  networthGoal: number;
 };
 
 export default function AccountsClient({
@@ -60,56 +64,62 @@ export default function AccountsClient({
           <h1 className="text-2xl font-medium">Accounts Overview</h1>
         </div>
       </Link>
-      <div className="flex flex-col gap-3">
-        {accounts.map((account) => (
-          <div
-            className="flex flex-col gap-3 p-3 cardGradient rounded-[10px] uppercase text-[#ffffff]"
-            key={account.id}
-          >
-            <h1 className="font-semibold text-2xl text-[#ffffff] flex items-center justify-between">
-              {account.name}{" "}
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <EllipsisVertical />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-max bg-transparent border-none shadow-none p-0">
-                  <Button className="text-white bg-[#C9240E] rounded-xl font-semibold">
-                    Delete Account?
-                  </Button>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </h1>
-            <div className="flex justify-between items-center">
-              <div>
-                <Image
-                  src="/accountIcon.svg"
-                  width={110}
-                  height={110}
-                  alt="accountIcon"
-                />
-              </div>
-              <div className="flex flex-col gap-5">
-                <div className="flex flex-col">
-                  <h2 className="font-semibold text-sm text-[#EBEBEB]">
-                    {Number(account.balance).toLocaleString("de-DE") +
-                      " " +
-                      account.currencyId}
-                  </h2>
-                  <h1 className="font-semibold text-2xl ">
-                    {Number(account.balance * account.rate).toLocaleString(
-                      "de-DE",
-                    )}{" "}
-                    {userInfo.currencyCode}
+      <div className="flex flex-col gap-4 w-full">
+        {accounts.map((item) => {
+          const accountBalance = Number(item.balance).toLocaleString("de-DE", {
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2,
+          });
+
+          const accountBalanceConverted = (
+            item.balance * item.rate
+          ).toLocaleString("de-DE", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          });
+
+          const [ABintegerPart, ABdecimalPart] = accountBalance.split(",");
+          const [ABCintegerPart, ABCdecimalPart] =
+            accountBalanceConverted.split(",");
+
+          return (
+            <div key={item.id} className="w-full relative overflow-hidden">
+              <div
+                className="w-full flex flex-col gap-6 p-4 rounded-[16px]"
+                style={{ background: item.hexCode }}
+              >
+                {/* Account Name */}
+                <h1 className="uppercase font-semibold text-xl text-accent2">
+                  {item.name}
+                </h1>
+                {/* Account Numbers */}
+                <div className="flex flex-col gap-[-4px]">
+                  <h1 className="font-semibold text-base text-accent2 opacity-50">
+                    {ABintegerPart}
+                    <span className="text-xs">
+                      ,{!ABdecimalPart ? "00" : ABdecimalPart}
+                      {" " + item.currencyId}
+                    </span>
+                  </h1>
+                  <h1 className="font-semibold text-3xl text-accent2">
+                    {ABCintegerPart}
+                    <span className="text-base">
+                      ,{ABCdecimalPart + " "}
+                      {userInfo.currencyId}
+                    </span>
                   </h1>
                 </div>
-
-                <Link href="#" className="flex">
-                  LAST TRANSACTIONS <ChevronRight />
-                </Link>
+                {/* View Details */}
+                <div className="w-full flex justify-end items-center text-accent2 opacity-80 font-semibold text-sm">
+                  VIEW DETAILS
+                  <ChevronRight />
+                </div>
               </div>
+              {/* Decoration */}
+              <div className="absolute top-7 -right-5 rounded-full h-12.5 w-12.5 bg-accent2 opacity-80"></div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         <Button
           className="bg-accent1 font-bold text-xs text-primary py-2 rounded-3xl flex justify-center"
