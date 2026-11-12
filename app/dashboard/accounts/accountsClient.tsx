@@ -112,7 +112,7 @@ export default function AccountsClient({
                 {/* View Details */}
                 <Link
                   href={`accounts/${item.id}`}
-                  className="w-full flex justify-end items-center text-accent2 opacity-80 font-semibold text-sm"
+                  className="w-full flex justify-end items-center text-accent2 opacity-80 font-semibold text-sm pointer-events-none"
                 >
                   VIEW DETAILS
                   <ChevronRight />
