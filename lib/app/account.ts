@@ -46,6 +46,26 @@ export async function LoadAccountsById(userId: number) {
   }
 }
 
+export async function LoadAccountById(accountId: number) {
+  const result = await pool.query(
+    `
+    SELECT 
+      id,  
+      name,
+      balance,
+      (SELECT Rate from ExchangeRate WHERE firstCurrencyId = currencyId AND secondCurrencyId = (SELECT currencyId FROM Users WHERE id = userId)) as "rate",
+      hexcode as "hexCode",
+      currencyId as "accountCurrencyId",
+      (SELECT currencyId FROM Users WHERE id = userid ) as "userCurrencyId"
+    FROM Account
+    WHERE id = $1
+    `,
+    [accountId],
+  );
+
+  return result.rows[0];
+}
+
 export async function CreateNewAccount(
   userId: number,
   accountName: string,

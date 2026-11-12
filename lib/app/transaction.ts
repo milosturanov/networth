@@ -79,3 +79,24 @@ export async function DeleteTransaction(
 
   redirect("/dashboard/transactions");
 }
+
+export async function GetTransactionsByAccountId(accountId: number) {
+  const result = await pool.query(
+    `
+    SELECT 
+      T.id,
+      T.name,
+      T.createdAt as "createdAt",
+      T.amount,
+      C.categoryType as "categoryType",
+      (SELECT currencyId FROM Account WHERE id = $1) as "currencyId"
+    FROM Transaction T 
+    JOIN Category C ON T.categoryId = C.id
+    WHERE T.accountId = $1
+    ORDER BY T.CreatedAt desc
+  `,
+    [accountId],
+  );
+
+  return result.rows;
+}

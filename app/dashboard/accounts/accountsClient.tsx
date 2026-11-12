@@ -110,10 +110,13 @@ export default function AccountsClient({
                   </h1>
                 </div>
                 {/* View Details */}
-                <div className="w-full flex justify-end items-center text-accent2 opacity-80 font-semibold text-sm">
+                <Link
+                  href={`accounts/${item.id}`}
+                  className="w-full flex justify-end items-center text-accent2 opacity-80 font-semibold text-sm"
+                >
                   VIEW DETAILS
                   <ChevronRight />
-                </div>
+                </Link>
               </div>
               {/* Decoration */}
               <div className="absolute top-7 -right-5 rounded-full h-12.5 w-12.5 bg-accent2 opacity-80"></div>
