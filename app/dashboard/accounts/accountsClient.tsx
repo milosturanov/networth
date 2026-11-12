@@ -3,14 +3,8 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight, EllipsisVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
 
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-} from "@/components/ui/dropdown-menu";
 
 import CurrencyCombobox from "@/components/custom/currencyCombobox";
 
@@ -20,7 +14,6 @@ import { CreateNewAccount } from "@/lib/app/account";
 
 import { Currency } from "@/lib/types";
 import { redirect } from "next/navigation";
-import { div } from "framer-motion/client";
 
 type AccountInfo = {
   id: number;
@@ -112,7 +105,7 @@ export default function AccountsClient({
                 {/* View Details */}
                 <Link
                   href={`/dashboard/accounts/${item.id}`}
-                  className="w-full flex justify-end items-center text-accent2 opacity-80 font-semibold text-sm pointer-events-none"
+                  className="w-full flex justify-end items-center text-accent2 opacity-80 font-semibold text-sm"
                 >
                   VIEW DETAILS
                   <ChevronRight />
