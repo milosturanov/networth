@@ -89,7 +89,10 @@ export default function AccountInfoClient({
                 ) {
                   return (
                     /* Each Transaction */
-                    <div className="w-full grid grid-cols-3 px-2 py-4 bg-secondary text-accent2 text-sm font-semibold  first:rounded-t-[16px] last:rounded-b-[16px]  text-center items-center">
+                    <div
+                      className="w-full grid grid-cols-3 px-2 py-4 bg-secondary text-accent2 text-sm font-semibold  first:rounded-t-[16px] last:rounded-b-[16px]  text-center items-center"
+                      key={transaction.id}
+                    >
                       <h1 className="text-left capitalize">
                         {transaction.name}
                       </h1>
@@ -108,7 +111,11 @@ export default function AccountInfoClient({
                         }}
                         className="lowercase opacity-50"
                       >
-                        {transaction.amount + " " + transaction.currencyId}
+                        {Number(transaction.amount).toLocaleString("de-DE", {
+                          minimumFractionDigits: 2,
+                        }) +
+                          " " +
+                          transaction.currencyId}
                       </h1>
                     </div>
                   );
