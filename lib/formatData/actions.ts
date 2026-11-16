@@ -11,9 +11,14 @@ export function CompleteNetworth(NetworthLast6: NetworthLast6[]) {
   const date = new Date();
   let year: number;
   let month: number;
+
   let networth: number;
 
-  if (NetworthLast6) {
+  if (NetworthLast6.at(-1)?.networth !== undefined) {
+    month = NetworthLast6.at(-1)?.month;
+    year = NetworthLast6.at(-1)?.year;
+    networth = NetworthLast6.at(-1)?.networth;
+  } else {
     year = date.getFullYear();
     month = date.getMonth();
     networth = 10000;

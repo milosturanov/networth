@@ -127,7 +127,7 @@ export default function AccountsClient({
         </Button>
       </div>
 
-      <Dialog open={Open} onOpenChange={() => SetOpen(!Open)}>
+      {/*<Dialog open={Open} onOpenChange={() => SetOpen(!Open)}>
         <DialogContent>
           <DialogHeader>Add New Account</DialogHeader>
           <form
@@ -159,7 +159,7 @@ export default function AccountsClient({
             </div>
           </form>
         </DialogContent>
-      </Dialog>
+      </Dialog>  */}
     </div>
   );
 }
