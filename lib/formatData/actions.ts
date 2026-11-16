@@ -14,13 +14,15 @@ export function CompleteNetworth(NetworthLast6: NetworthLast6[]) {
 
   let networth: number;
 
-  if (NetworthLast6.at(-1)?.networth !== undefined) {
-    month = NetworthLast6.at(-1)?.month;
-    year = NetworthLast6.at(-1)?.year;
-    networth = NetworthLast6.at(-1)?.networth;
+  const lastEntry = NetworthLast6.at(-1);
+
+  if (lastEntry) {
+    month = lastEntry.month;
+    year = lastEntry.year;
+    networth = lastEntry.networth;
   } else {
     year = date.getFullYear();
-    month = date.getMonth();
+    month = date.getMonth() + 1;
     networth = 10000;
 
     NetworthLast6.push({
