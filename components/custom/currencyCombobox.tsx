@@ -19,8 +19,11 @@ export default function CurrencyCombobox({
 }: CurrencyComboboxProps) {
   return (
     <Combobox items={currencies} onValueChange={onValueChange}>
-      <ComboboxInput placeholder="Choose currency of account" />
-      <ComboboxContent>
+      <ComboboxInput
+        placeholder="Choose currency of account"
+        className="border-none bg-secondary! text-accent2"
+      />
+      <ComboboxContent className="bg-secondary text-accent2">
         <ComboboxEmpty>No Currency was found.</ComboboxEmpty>
         <ComboboxList>
           {currencies.map((item) => {

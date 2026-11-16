@@ -11,16 +11,17 @@ export async function Register(
   username: string,
   password: string,
   currencyId: string,
+  networthGoal: number,
 ) {
   const result = await pool.query(
-    "INSERT INTO Users(name,password_hash,currencyId) VALUES($1, $2, $3 ) RETURNING id",
-    [username, password, currencyId],
+    "INSERT INTO Users(name,password_hash,currencyId,networthgoal) VALUES($1, $2, $3, $4) RETURNING id",
+    [username, password, currencyId, networthGoal],
   );
 
   const userId = result.rows[0].id;
 
-  await CreateNewAccount(userId, "CASH ACCOUNT", currencyId);
-  await CreateNewAccount(userId, "BANK ACCOUNT", currencyId);
+  await CreateNewAccount(userId, "CASH ACCOUNT", currencyId, "#CF7D1F");
+  await CreateNewAccount(userId, "BANK ACCOUNT", currencyId, "#3F1FCF");
   await CreateSession(userId);
 
   redirect("/dashboard");

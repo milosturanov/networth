@@ -1,3 +1,5 @@
+"use client";
+
 type NetworthLast6 = {
   year: number;
   month: number;
@@ -11,11 +13,7 @@ export function CompleteNetworth(NetworthLast6: NetworthLast6[]) {
   let month: number;
   let networth: number;
 
-  try {
-    year = NetworthLast6.at(-1)?.year!;
-    month = NetworthLast6.at(-1)?.month!;
-    networth = NetworthLast6.at(-1)?.networth!;
-  } catch {
+  if (NetworthLast6) {
     year = date.getFullYear();
     month = date.getMonth();
     networth = 10000;

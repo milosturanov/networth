@@ -10,7 +10,7 @@ export default function LoginForm() {
   const [Password, setPassword] = useState("");
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="min-h-screen flex flex-col items-center justify-center gap-10">
       <h1 className="text-accent1 text-3xl font-bold">NETWORTH</h1>
       <form
         className="flex flex-col items-center gap-2"
@@ -21,7 +21,7 @@ export default function LoginForm() {
       >
         <Input
           placeholder="Username"
-          className="border pl-4 rounded-sm"
+          className="rounded-[8px] text-accent2 py-2 bg-secondary px-4"
           value={Username}
           onChange={(e) => {
             setUsername(e.target.value);
@@ -34,7 +34,7 @@ export default function LoginForm() {
           }}
           placeholder="Password"
           type="password"
-          className="border rounded-sm pl-4"
+          className="rounded-[8px] text-accent2 py-2 bg-secondary px-4"
         ></Input>
         <Link
           href="/signup"

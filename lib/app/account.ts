@@ -70,10 +70,11 @@ export async function CreateNewAccount(
   userId: number,
   accountName: string,
   currencyId: string,
+  hexCode: string,
 ) {
   await pool.query(
-    "INSERT INTO Account(userId, name, currencyId) values($1,$2,$3)",
-    [userId, accountName, currencyId],
+    "INSERT INTO Account(userId, name, currencyId, hexcode) values($1,$2,$3,$4)",
+    [userId, accountName, currencyId, hexCode],
   );
 }
 

@@ -55,13 +55,19 @@ export default function AccountInfoClient({
           <h2 className="-mb-1 font-semibold opacity-50">
             {ABinteger}
             <span className="text-xs">
-              ,{ABdecimal + " " + accountInfo.accountCurrencyId}
+              ,
+              {ABdecimal
+                ? ABdecimal
+                : "00" + " " + accountInfo.accountCurrencyId}
             </span>
           </h2>
           <h1 className="text-3xl font-semibold">
             {ABCinteger}
             <span className="text-base">
-              ,{ABCdecimal + " " + accountInfo.userCurrencyId}
+              ,
+              {ABCdecimal
+                ? ABCdecimal
+                : "00" + " " + accountInfo.userCurrencyId}
             </span>
           </h1>
         </div>
