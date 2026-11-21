@@ -36,8 +36,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 <Link href="#">
                   <UserGroup width={24} height={24} />
                 </Link>
-                <Link href="#" onClick={() => SignOut()}>
-                  <LogOut width={24} height={24} />
+                <Link href="/dashboard/profile">
+                  <CircleUserRound width={24} height={24} />
                 </Link>
               </div>
             )}

@@ -76,17 +76,18 @@ export default function AccountsClient({
             accountBalanceConverted.split(",");
 
           return (
-            <div key={item.id} className="w-full relative overflow-hidden">
-              <div
-                className="w-full flex flex-col gap-6 p-4 rounded-[16px]"
-                style={{ background: item.hexCode }}
-              >
+            <div
+              key={item.id}
+              className="w-full relative p-4 overflow-hidden rounded-[16px]"
+              style={{ background: item.hexCode }}
+            >
+              <div className="w-full flex flex-col gap-6">
                 {/* Account Name */}
                 <h1 className="uppercase font-semibold text-xl text-accent2">
                   {item.name}
                 </h1>
                 {/* Account Numbers */}
-                <div className="flex flex-col gap-[-4px]">
+                <div className="flex flex-col">
                   <h1 className="font-semibold text-base text-accent2 opacity-50">
                     {ABintegerPart}
                     <span className="text-xs">
@@ -94,7 +95,7 @@ export default function AccountsClient({
                       {" " + item.currencyId}
                     </span>
                   </h1>
-                  <h1 className="font-semibold text-3xl text-accent2">
+                  <h1 className="font-semibold text-3xl text-accent2 -mt-1">
                     {ABCintegerPart}
                     <span className="text-base">
                       ,{ABCdecimalPart + " "}

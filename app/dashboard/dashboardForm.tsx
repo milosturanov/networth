@@ -139,7 +139,7 @@ export default function DashboardForm({
       </div>
       <AnimatePresence>
         {/* Goal Reached Pop Up*/}
-        {networth > userInfo.networthGoal && (
+        {networth >= userInfo.networthGoal && (
           <div
             className="absolute top-0 right-0 left-0 bottom-0 z-101 w-full h-full px-5 flex items-center justify-center backdrop-blur-[10px]"
             style={{
